@@ -35,9 +35,10 @@ export default function HomeScreen({route, navigation}) {
 
     const onSignOutPress = () => {
         firebase.auth().signOut().then(function () {
-            navigation.navigate('Login')
+            //TODO: clean navigation stack
+            navigation.navigate('Login');
         }).catch(function (error) {
-            console.log("fail to log out--------------------");
+            console.log(error);
         });
     }
     const onAddButtonPress = () => {
