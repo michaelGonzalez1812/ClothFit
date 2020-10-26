@@ -25,11 +25,11 @@ export default function App() {
           .get()
           .then((document) => {
             const userData = document.data()
-            setLoading(false)
             setUser(userData)
+            setLoading(false)
           })
           .catch((error) => {
-            setLoading(false)
+            setLoading(true)
           });
       } else {
         setLoading(false)
@@ -37,8 +37,12 @@ export default function App() {
     });
   }, []);
 
-  if (loading)
+  if (loading)/*
+  <Stack.Screen name="Home">
+                {props => <HomeScreen {...props} extraData={user} />}
+              </Stack.Screen> */
     return (
+      //TODO: Create loading page
       <Text>loading</Text>
     );
   else
@@ -46,9 +50,15 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator>
           {user ? (
-            <Stack.Screen name="Home">
-              {props => <HomeScreen {...props} extraData={user} />}
-            </Stack.Screen>
+            <>
+            <Stack.Screen
+                name="Home"
+                component={HomeScreen}
+                initialParams={{ props: user }}
+              />
+              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen name="Registration" component={RegistrationScreen} />
+            </>
           ) : (
               <>
                 <Stack.Screen name="Login" component={LoginScreen} />
