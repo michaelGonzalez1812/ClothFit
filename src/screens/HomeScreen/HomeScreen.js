@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { FlatList, Keyboard, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import styles from './styles';
 import { firebase } from '../../firebase/config'
-
+/*
 export default function HomeScreen({route, navigation}) {
 
     const [entityText, setEntityText] = useState('')
@@ -103,4 +103,13 @@ export default function HomeScreen({route, navigation}) {
             )}
         </View>
     )
+}
+*/
+
+export default function HomeScreen({route, navigation}) {
+    return (
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <Text>Home Screen</Text>
+        </View>
+      );
 }

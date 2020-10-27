@@ -3,16 +3,19 @@ import React, { useEffect, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { LoginScreen, HomeScreen, RegistrationScreen } from './src/screens'
+import { RootNavigator } from './src/screens/RootNavigator'
+import { Provider as PaperProvider } from 'react-native-paper';
 import { Text } from 'react-native'
 import { decode, encode } from 'base-64'
 import { firebase } from './src/firebase/config'
 if (!global.btoa) { global.btoa = encode }
 if (!global.atob) { global.atob = decode }
 
+
 const Stack = createStackNavigator();
 
 export default function App() {
-
+/*
   const [loading, setLoading] = useState(true)
   const [user, setUser] = useState(null)
 
@@ -36,36 +39,44 @@ export default function App() {
       }
     });
   }, []);
-
-  if (loading)/*
-  <Stack.Screen name="Home">
-                {props => <HomeScreen {...props} extraData={user} />}
-              </Stack.Screen> */
+*/
+  /*
+  if (loading)
     return (
       //TODO: Create loading page
       <Text>loading</Text>
     );
   else
     return (
-      <NavigationContainer>
-        <Stack.Navigator>
-          {user ? (
-            <>
-            <Stack.Screen
-                name="Home"
-                component={HomeScreen}
-                initialParams={{ props: user }}
-              />
-              <Stack.Screen name="Login" component={LoginScreen} />
-              <Stack.Screen name="Registration" component={RegistrationScreen} />
-            </>
-          ) : (
+      <PaperProvider>
+        <NavigationContainer>
+          <Stack.Navigator>
+            {user ? (
               <>
+                <Stack.Screen
+                  name="Home"
+                  component={HomeScreen}
+                  initialParams={{ props: user }}
+                />
                 <Stack.Screen name="Login" component={LoginScreen} />
                 <Stack.Screen name="Registration" component={RegistrationScreen} />
               </>
-            )}
-        </Stack.Navigator>
-      </NavigationContainer>
+            ) : (
+                <>
+                  <Stack.Screen name="Login" component={LoginScreen} />
+                  <Stack.Screen name="Registration" component={RegistrationScreen} />
+                </>
+              )}
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PaperProvider>
     );
+    */
+
+   return (
+      <PaperProvider>
+        <RootNavigator />
+      </PaperProvider>
+  );
+
 }
