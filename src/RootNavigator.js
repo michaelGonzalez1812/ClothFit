@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+
 import { createStackNavigator } from '@react-navigation/stack'
 import { Text } from 'react-native'
 import { LoginScreen, RegistrationScreen } from './auth';
 import { RootNavigator as ClientRootNavigator, AppBar } from './client/screens';
-import { Provider as PaperProvider } from 'react-native-paper';
 import { firebase } from './firebase/config';
 
 const Stack = createStackNavigator();
@@ -44,8 +43,6 @@ export const RootNavigator = () => {
   else
     //TODO: Look for a way to change the to choose with screen print from stack.navigator property.
     return (
-      <PaperProvider>
-        <NavigationContainer>
           <Stack.Navigator
             initialRouteName="FeedList"
             headerMode="screen"
@@ -63,7 +60,5 @@ export const RootNavigator = () => {
                 </>
               )}
           </Stack.Navigator>
-        </NavigationContainer>
-      </PaperProvider>
     );
 };

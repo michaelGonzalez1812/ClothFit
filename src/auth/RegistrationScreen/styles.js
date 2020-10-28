@@ -19,7 +19,6 @@ export default StyleSheet.create({
         height: 48,
         borderRadius: 5,
         overflow: 'hidden',
-        backgroundColor: 'white',
         marginTop: 10,
         marginBottom: 10,
         marginLeft: 30,
@@ -27,7 +26,6 @@ export default StyleSheet.create({
         paddingLeft: 16
     },
     button: {
-        backgroundColor: '#788eec',
         marginLeft: 30,
         marginRight: 30,
         marginTop: 20,

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Image, Text, View } from 'react-native'
+import { TextInput, Button } from 'react-native-paper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import { firebase } from '../../firebase/config'
@@ -92,11 +93,14 @@ export default function RegistrationScreen({ navigation }) {
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                 />
-                <TouchableOpacity
+                <Button
                     style={styles.button}
+                    icon="account-arrow-right"
+                    mode="contained"
                     onPress={() => onRegisterPress()}>
-                    <Text style={styles.buttonTitle}>Create account</Text>
-                </TouchableOpacity>
+                    
+                    Create account
+                </Button>
                 <View style={styles.footerView}>
                     <Text style={styles.footerText}>Already got an account? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Log in</Text></Text>
                 </View>

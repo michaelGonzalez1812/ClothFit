@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Image, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
+import { Button, TextInput, Text } from 'react-native-paper';
 import { firebase } from '../../firebase/config'
 
 export default function LoginScreen({ navigation }) {
@@ -65,11 +66,9 @@ export default function LoginScreen({ navigation }) {
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                 />
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => onLoginPress()}>
-                    <Text style={styles.buttonTitle}>Log in</Text>
-                </TouchableOpacity>
+                <Button style={styles.button} icon="account-arrow-right" mode="contained" onPress={() => onLoginPress()}>
+                    Log in
+                </Button>
                 <View style={styles.footerView}>
                     <Text style={styles.footerText}>Don't have an account? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Sign up</Text></Text>
                 </View>

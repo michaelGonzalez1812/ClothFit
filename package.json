@@ -15,6 +15,7 @@
     "@react-navigation/native": "^5.8.0",
     "@react-navigation/stack": "^5.10.0",
     "base-64": "^1.0.0",
+    "deepmerge": "^4.2.2",
     "expo": "~39.0.3",
     "expo-splash-screen": "~0.6.2",
     "expo-status-bar": "~1.0.2",
