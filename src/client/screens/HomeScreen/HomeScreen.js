@@ -2,17 +2,17 @@ import React, { useEffect, useState } from 'react'
 import { FlatList, Keyboard, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import styles from './styles';
 import { firebase } from '../../../firebase/config'
-/*
-export default function HomeScreen({route, navigation}) {
+
+export default function HomeScreen({navigation}) {
 
     const [entityText, setEntityText] = useState('')
     const [entities, setEntities] = useState([])
 
     const entityRef = firebase.firestore().collection('entities')
-    const { itemId , otherParam} = route.params;
-    const { user } = route.params;
-    const userID = route.params.props.id;
-
+    //const { itemId , otherParam} = route.params;
+    //const { user } = route.params;
+    //const userID = route.params.props.id;
+/*
     useEffect(() => {
         entityRef
             .where("authorID", "==", userID)
@@ -32,7 +32,7 @@ export default function HomeScreen({route, navigation}) {
                 }
             )
     }, [])
-
+*/
     const onSignOutPress = () => {
         firebase.auth().signOut().then(function () {
             //TODO: clean navigation stack
@@ -41,6 +41,7 @@ export default function HomeScreen({route, navigation}) {
             console.log(error);
         });
     }
+    /*
     const onAddButtonPress = () => {
         if (entityText && entityText.length > 0) {
             const timestamp = firebase.firestore.FieldValue.serverTimestamp();
@@ -60,6 +61,7 @@ export default function HomeScreen({route, navigation}) {
                 });
         }
     }
+    */
 
     const renderEntity = ({ item, index }) => {
         return (
@@ -74,42 +76,20 @@ export default function HomeScreen({route, navigation}) {
     return (
         <View style={styles.container}>
             <View style={styles.formContainer}>
-                <TextInput
-                    style={styles.input}
-                    placeholder='Add new entity'
-                    placeholderTextColor="#aaaaaa"
-                    onChangeText={(text) => setEntityText(text)}
-                    value={entityText}
-                    underlineColorAndroid="transparent"
-                    autoCapitalize="none"
-                />
-                <TouchableOpacity style={styles.button} onPress={onAddButtonPress}>
-                    <Text style={styles.buttonText}>Add</Text>
-                </TouchableOpacity>
+                
+                
                 <TouchableOpacity style={styles.button} onPress={onSignOutPress}>
                     <Text style={styles.buttonText}>SignOut</Text>
                 </TouchableOpacity>
 
             </View>
-            { entities && (
-                <View style={styles.listContainer}>
-                    <FlatList
-                        data={entities}
-                        renderItem={renderEntity}
-                        keyExtractor={(item) => item.id}
-                        removeClippedSubviews={true}
-                    />
-                </View>
-            )}
         </View>
     )
+    /*
+    <TouchableOpacity style={styles.button} onPress={onAddButtonPress}>
+                    <Text style={styles.buttonText}>Add</Text>
+                </TouchableOpacity>
+                */
 }
-*/
 
-export default function HomeScreen({route, navigation}) {
-    return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <Text>Home Screen</Text>
-        </View>
-      );
-}
+
