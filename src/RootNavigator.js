@@ -5,7 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { FlatList, Keyboard, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { useTheme } from 'react-native-paper';
-import { LoginScreen/*, HomeScreen*/, RegistrationScreen } from './client/screens';
+import { LoginScreen, RegistrationScreen } from './auth';
+import { RootNavigator as ClientRootNavigator } from './client/screens';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { firebase } from './firebase/config';
 
@@ -60,7 +61,7 @@ export const RootNavigator = () => {
   }, []);
 
   
-  if (loading)
+  /*if (loading)
     return (
       //TODO: Create loading page
       <Text>loading</Text>
@@ -71,6 +72,7 @@ export const RootNavigator = () => {
         <NavigationContainer>
           <Stack.Navigator>
             {user ? (
+        
               <>
                 <Stack.Screen
                   name="Home"
@@ -80,6 +82,37 @@ export const RootNavigator = () => {
                 <Stack.Screen name="Login" component={LoginScreen} />
                 <Stack.Screen name="Registration" component={RegistrationScreen} />
               </>
+
+              
+            ) : (
+                <>
+                  <Stack.Screen name="Login" component={LoginScreen} />
+                  <Stack.Screen name="Registration" component={RegistrationScreen} />
+                </>
+              )}
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PaperProvider>
+    );*/
+    if (loading)
+    return (
+      //TODO: Create loading page
+      <Text>loading</Text>
+    );
+  else
+    return (
+      <PaperProvider>
+        <NavigationContainer>
+          <Stack.Navigator>
+            {user ? (
+        
+              <>  
+                <Stack.Screen name="ClientRootNavigator" component={ClientRootNavigator} />
+                <Stack.Screen name="Login" component={LoginScreen} />
+                <Stack.Screen name="Registration" component={RegistrationScreen} />
+              </>
+
+              
             ) : (
                 <>
                   <Stack.Screen name="Login" component={LoginScreen} />
@@ -90,15 +123,4 @@ export const RootNavigator = () => {
         </NavigationContainer>
       </PaperProvider>
     );
-    
-
-
-    /*return (
-        <NavigationContainer>
-            <Drawer.Navigator drawerContent={() => <DrawerContent />}>
-                <Drawer.Screen name="Home" component={HomeScreen} />
-            </Drawer.Navigator>
-        </NavigationContainer>
-    );
-    */
 };
