@@ -4,7 +4,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import styles from './styles';
 import { firebase } from '../../firebase/config'
 
-export default function LoginScreen({userlogged, navigation}) {
+export default function LoginScreen({ navigation }) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
@@ -12,33 +12,29 @@ export default function LoginScreen({userlogged, navigation}) {
         navigation.navigate('Registration')
     }
 
-
-
     const onLoginPress = () => {
         firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
-        .then((response) => {
-            const uid = response.user.uid
-            const usersRef = firebase.firestore().collection('users')
-            usersRef
-                .doc(uid)
-                .get()
-                .then(firestoreDocument => {
-                    if (!firestoreDocument.exists) {
-                        alert("User does not exist anymore.")
-                        return;
-                    }
-                    const user = firestoreDocument.data()
-                    navigation.navigate('ClientRootNavigator')
-                })
-                .catch(error => {
-                    alert(error)
-                });
-        })
-        .catch(error => {
-            alert(error)
-        })
+            .auth()
+            .signInWithEmailAndPassword(email, password)
+            .then((response) => {
+                const uid = response.user.uid
+                const usersRef = firebase.firestore().collection('users')
+                usersRef
+                    .doc(uid)
+                    .get()
+                    .then(firestoreDocument => {
+                        if (!firestoreDocument.exists) {
+                            alert("User does not exist anymore.")
+                            return;
+                        }
+                    })
+                    .catch(error => {
+                        alert(error)
+                    });
+            })
+            .catch(error => {
+                alert(error)
+            })
     }
 
     return (

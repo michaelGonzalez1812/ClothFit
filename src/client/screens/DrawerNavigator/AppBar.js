@@ -1,32 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { Appbar, Avatar } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { DrawerActions } from '@react-navigation/native';
 
-
-
 export default function Header({ scene, previous, navigation }) {
-    
 
     const { options } = scene.descriptor;
-    const title =
-        options.headerTitle !== undefined
-            ? options.headerTitle
-            : options.title !== undefined
-                ? options.title
-                : scene.route.name;
-
-
-        
-    
+    const title = options.headerTitle !== undefined ? options.headerTitle :
+        options.title !== undefined ? options.title :
+            scene.route.name;
 
     return (
         <Appbar.Header>
             {previous ? (
                 <Appbar.BackAction
                     onPress={navigation.pop}
-                    //color={theme.colors.primary}
                 />
             ) : (
                     <TouchableOpacity

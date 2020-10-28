@@ -5,7 +5,6 @@ import {
   DrawerContentScrollView
 } from '@react-navigation/drawer';
 import {
-  useTheme,
   Avatar,
   Title,
   Caption,
