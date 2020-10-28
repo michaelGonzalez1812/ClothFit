@@ -34,7 +34,7 @@ export default function RegistrationScreen({navigation}) {
                     .doc(uid)
                     .set(data)
                     .then(() => {
-                        navigation.navigate('Home', {user: data})
+                        navigation.navigate('ClientRootNavigator')
                     })
                     .catch((error) => {
                         alert(error)

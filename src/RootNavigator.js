@@ -6,7 +6,7 @@ import { DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { FlatList, Keyboard, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { useTheme } from 'react-native-paper';
 import { LoginScreen, RegistrationScreen } from './auth';
-import { RootNavigator as ClientRootNavigator } from './client/screens';
+import { RootNavigator as ClientRootNavigator, AppBar } from './client/screens';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { firebase } from './firebase/config';
 
@@ -100,23 +100,31 @@ export const RootNavigator = () => {
       <Text>loading</Text>
     );
   else
+    //TODO: Look for a way to change the to choose with screen print from stack.navigator property.
     return (
       <PaperProvider>
         <NavigationContainer>
-          <Stack.Navigator>
+          <Stack.Navigator
+          initialRouteName="FeedList"
+          headerMode="screen"
+          screenOptions={{
+            header: ({ scene, previous, navigation }) => (
+              <AppBar scene={scene} previous={previous} navigation={navigation} />
+            ),
+          }}>
             {user ? (
         
               <>  
                 <Stack.Screen name="ClientRootNavigator" component={ClientRootNavigator} />
-                <Stack.Screen name="Login" component={LoginScreen} />
-                <Stack.Screen name="Registration" component={RegistrationScreen} />
+                <Stack.Screen options={{headerShown: false}} name="Login" component={LoginScreen} />
+                <Stack.Screen name="Registration" component={RegistrationScreen} options={{ headerShown: false }}/>
               </>
 
               
             ) : (
                 <>
-                  <Stack.Screen name="Login" component={LoginScreen} />
-                  <Stack.Screen name="Registration" component={RegistrationScreen} />
+                  <Stack.Screen name="Login" component={LoginScreen} options={{headerShown: false}} />
+                  <Stack.Screen name="Registration" component={RegistrationScreen} options={{headerShown: false}}/>
                 </>
               )}
           </Stack.Navigator>

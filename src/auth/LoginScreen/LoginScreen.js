@@ -12,6 +12,8 @@ export default function LoginScreen({userlogged, navigation}) {
         navigation.navigate('Registration')
     }
 
+
+
     const onLoginPress = () => {
         firebase
         .auth()
@@ -28,7 +30,7 @@ export default function LoginScreen({userlogged, navigation}) {
                         return;
                     }
                     const user = firestoreDocument.data()
-                    navigation.navigate('Home', {user})
+                    navigation.navigate('ClientRootNavigator')
                 })
                 .catch(error => {
                     alert(error)

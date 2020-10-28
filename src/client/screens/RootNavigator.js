@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { DrawerContent, HomeScreen } from './';
+import { DrawerContent, HomeScreen, AppBar } from './';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Text, View } from 'react-native'
 
@@ -15,9 +15,11 @@ function HomeScreen() {
 }
 */
 export default function RootNavigator() {
-        return (
+    return (
+
             <Drawer.Navigator drawerContent={() => <DrawerContent />}>
                 <Drawer.Screen name="Home" component={HomeScreen} />
             </Drawer.Navigator>
+        
     );
 }
