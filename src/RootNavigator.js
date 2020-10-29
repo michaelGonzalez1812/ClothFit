@@ -5,6 +5,7 @@ import { Text } from 'react-native'
 import { LoginScreen, RegistrationScreen } from './auth';
 import { RootNavigator as ClientRootNavigator, AppBar } from './client/screens';
 import { firebase } from './firebase/config';
+import { CurrentUserContext } from './auth'
 
 const Stack = createStackNavigator();
 
@@ -43,22 +44,26 @@ export const RootNavigator = () => {
   else
     //TODO: Look for a way to change the to choose with screen print from stack.navigator property.
     return (
-          <Stack.Navigator
-            initialRouteName="FeedList"
-            headerMode="screen"
-            screenOptions={{
-              header: ({ scene, previous, navigation }) => (
-                <AppBar scene={scene} previous={previous} navigation={navigation} />
-              ),
-            }}>
-            {user != null ? (
-                <Stack.Screen name="ClientRootNavigator" component={ClientRootNavigator} />
-            ) : (
-                <>
-                  <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-                  <Stack.Screen name="Registration" component={RegistrationScreen} options={{ headerShown: false }} />
-                </>
-              )}
-          </Stack.Navigator>
+      <CurrentUserContext.Provider value={{ user }}>
+        <Stack.Navigator
+          initialRouteName="FeedList"
+          headerMode="screen"
+          screenOptions={{
+            header: ({ scene, previous, navigation }) => (
+              <AppBar scene={scene} previous={previous} navigation={navigation} />
+            ),
+          }}>
+          {user != null ? (
+
+            <Stack.Screen name="ClientRootNavigator" component={ClientRootNavigator} />
+
+          ) : (
+              <>
+                <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+                <Stack.Screen name="Registration" component={RegistrationScreen} options={{ headerShown: false }} />
+              </>
+            )}
+        </Stack.Navigator>
+      </CurrentUserContext.Provider>
     );
 };
