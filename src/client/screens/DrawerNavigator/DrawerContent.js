@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View } from 'react-native';
 import { CurrentUserContext } from './../../../auth';
 import styles from './styles';
+import { ThemeContext } from './../../../../theme';
 import {
   DrawerItem,
   DrawerContentScrollView
@@ -17,45 +18,52 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function DrawerContent(props) {
 
-  const [isDarkThemeOn, setisDarkThemeOn] = React.useState(false);
-
-  const onThemeSwitch = () => setisDarkThemeOn(!isDarkThemeOn);
-
+  const themeContext = useContext(ThemeContext);
+  const [isDarkThemeOn, setisDarkThemeOn] = React.useState(themeContext.isDarkTheme);
+  
   return (
-    <CurrentUserContext.Consumer>
-      {({ user }) => (
-        <DrawerContentScrollView {...props}>
-          <View
-            style={
-              styles.drawerContent
-            }
-          >
-            <View style={styles.userInfoSection}>
-              <Avatar.Icon size={100} icon="account" />
-              <Title style={styles.title}>{user.fullName}</Title>
-            </View>
-            <Drawer.Section style={styles.drawerSection}>
-              <DrawerItem
-                icon={({ color, size }) => (
-                  <MaterialCommunityIcons
-                    name="account-outline"
-                    color={color}
-                    size={size}
-                  />
-                )}
-                label="Profile"
-                onPress={() => { }}
+    <DrawerContentScrollView {...props}>
+      <View
+        style={
+          styles.drawerContent
+        }
+      >
+        <View style={styles.userInfoSection}>
+          <Avatar.Icon size={100} icon="account" />
+          <CurrentUserContext.Consumer>
+            {({ user }) => ( 
+              <Title style={styles.title}>{user? user.fullName: ""}</Title>
+            )}
+          </CurrentUserContext.Consumer>
+        </View>
+        <Drawer.Section style={styles.drawerSection}>
+          <DrawerItem
+            icon={({ color, size }) => (
+              <MaterialCommunityIcons
+                name="account-outline"
+                color={color}
+                size={size}
               />
-            </Drawer.Section>
-            <Drawer.Section title="Preferences">
-              <View style={styles.preference}>
-                <Text>Dark Theme</Text>
-                <Switch value={isDarkThemeOn} onValueChange={onThemeSwitch} />
-              </View>
-            </Drawer.Section>
+            )}
+            label="Profile"
+            onPress={() => { }}
+          />
+        </Drawer.Section>
+        <Drawer.Section title="Preferences">
+          <View style={styles.preference}>
+            <Text>Dark Theme</Text>
+            <ThemeContext.Consumer>
+            {({ isDarktheme, setDarkThemec }) => (
+              <Switch value={isDarkThemeOn} onValueChange={(isDarkthemep) => {
+                setDarkThemec(isDarkthemep)
+                setisDarkThemeOn(isDarkthemep)
+              }} />
+            )}
+            </ThemeContext.Consumer>
+
           </View>
-        </DrawerContentScrollView>
-      )}
-    </CurrentUserContext.Consumer>
+        </Drawer.Section>
+      </View>
+    </DrawerContentScrollView>
   );
 }
