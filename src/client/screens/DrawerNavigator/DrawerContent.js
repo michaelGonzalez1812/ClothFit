@@ -45,9 +45,22 @@ export default function DrawerContent(props) {
                 size={size}
               />
             )}
-            label="Profile"
+            label="Account"
             onPress={() => {
               props.navigation.navigate('Account')
+            }}
+          />
+          <DrawerItem
+            icon={({ color, size }) => (
+              <MaterialCommunityIcons
+                name="history"
+                color={color}
+                size={size}
+              />
+            )}
+            label="History"
+            onPress={() => {
+              props.navigation.navigate('History')
             }}
           />
         </Drawer.Section>
