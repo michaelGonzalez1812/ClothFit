@@ -40,19 +40,6 @@ export default function DrawerContent(props) {
           <DrawerItem
             icon={({ color, size }) => (
               <MaterialCommunityIcons
-                name="account-outline"
-                color={color}
-                size={size}
-              />
-            )}
-            label="Account"
-            onPress={() => {
-              props.navigation.navigate('Account')
-            }}
-          />
-          <DrawerItem
-            icon={({ color, size }) => (
-              <MaterialCommunityIcons
                 name="history"
                 color={color}
                 size={size}
@@ -61,6 +48,19 @@ export default function DrawerContent(props) {
             label="History"
             onPress={() => {
               props.navigation.navigate('History')
+            }}
+          />
+          <DrawerItem
+            icon={({ color, size }) => (
+              <MaterialCommunityIcons
+                name="account-outline"
+                color={color}
+                size={size}
+              />
+            )}
+            label="Account"
+            onPress={() => {
+              props.navigation.navigate('Account')
             }}
           />
         </Drawer.Section>
