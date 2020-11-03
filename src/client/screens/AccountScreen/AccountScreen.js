@@ -1,5 +1,12 @@
 import React from 'react';
-import { Surface, Text } from 'react-native-paper';
+import { View } from 'react-native';
+import { CurrentUserContext } from './../../../auth';
+import {
+    Surface,
+    Avatar,
+    Title,
+    Button
+} from 'react-native-paper';
 import { firebase } from '../../../firebase/config';
 import styles from './styles';
 
@@ -14,7 +21,21 @@ export default function AccountScreen({ navigation }) {
         });
     }
 
+    //TODO: add phone
     return (
-        <Text>Surface</Text>
+        <CurrentUserContext.Consumer>
+            {({ user }) => (
+                <View style={styles.general}>
+                    <Surface style={styles.surface}>
+                        <Avatar.Icon size={100} icon="account" />
+                        <Title style={styles.title}>{user ? user.fullName : ""}</Title>
+                        <Button icon="email" mode="text" >
+                            {user ? user.email : ""}
+                        </Button>
+                    </Surface>
+                </View>
+            )}
+        </CurrentUserContext.Consumer>
+
     )
 }

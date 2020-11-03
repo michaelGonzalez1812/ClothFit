@@ -1,12 +1,17 @@
 import { StyleSheet } from 'react-native';
 
-const styles = StyleSheet.create({
+export default StyleSheet.create({
     surface: {
-        padding: 8,
-        height: 80,
-        width: 80,
-        alignItems: 'center',
-        justifyContent: 'center',
+        padding: 10,
+        alignItems: 'center', //horizontal
+        justifyContent: 'center', //veritical
         elevation: 4,
+        flex: 1
     },
+
+    general: {
+        ...StyleSheet.absoluteFill,
+        padding: 15,
+        justifyContent: 'center'
+    }
 });

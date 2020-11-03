@@ -21,7 +21,7 @@ export const CustomDefaultTheme =
         accent: '#90a4ae',
         background: '#f5f5f5',
         text: '#2e2e2d',
-        surface: '#26365c',
+        surface: '#f5f5f5',
         onBackground: '#543155',
         onSurface: '#543155'
     }
