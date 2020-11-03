@@ -48,9 +48,7 @@ export default function RegistrationScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <KeyboardAwareScrollView
-                style={{ flex: 1, width: '100%' }}
-                keyboardShouldPersistTaps="always">
+            <View style={styles.container}>
                 <Image
                     style={styles.logo}
                     source={require('../../../assets/icon.png')}
@@ -98,13 +96,13 @@ export default function RegistrationScreen({ navigation }) {
                     icon="account-arrow-right"
                     mode="contained"
                     onPress={() => onRegisterPress()}>
-                    
+
                     Create account
                 </Button>
                 <View style={styles.footerView}>
                     <Text style={styles.footerText}>Already got an account? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Log in</Text></Text>
                 </View>
-            </KeyboardAwareScrollView>
+            </View>
         </View>
     )
 }

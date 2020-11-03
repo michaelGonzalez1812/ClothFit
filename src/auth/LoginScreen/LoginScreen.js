@@ -40,39 +40,36 @@ export default function LoginScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <KeyboardAwareScrollView
-                style={{ flex: 1, width: '100%' }}
-                keyboardShouldPersistTaps="always">
-                <Image
-                    style={styles.logo}
-                    source={require('../../../assets/icon.png')}
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder='E-mail'
-                    placeholderTextColor="#aaaaaa"
-                    onChangeText={(text) => setEmail(text)}
-                    value={email}
-                    underlineColorAndroid="transparent"
-                    autoCapitalize="none"
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholderTextColor="#aaaaaa"
-                    secureTextEntry
-                    placeholder='Password'
-                    onChangeText={(text) => setPassword(text)}
-                    value={password}
-                    underlineColorAndroid="transparent"
-                    autoCapitalize="none"
-                />
-                <Button style={styles.button} icon="account-arrow-right" mode="contained" onPress={() => onLoginPress()}>
-                    Log in
-                </Button>
-                <View style={styles.footerView}>
-                    <Text style={styles.footerText}>Don't have an account? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Sign up</Text></Text>
-                </View>
-            </KeyboardAwareScrollView>
+            <Image
+                style={styles.logo}
+                source={require('../../../assets/icon.png')}
+            />
+            <TextInput
+                style={styles.input}
+                placeholder='E-mail'
+                placeholderTextColor="#aaaaaa"
+                onChangeText={(text) => setEmail(text)}
+                value={email}
+                underlineColorAndroid="transparent"
+                autoCapitalize="none"
+            />
+            <TextInput
+                style={styles.input}
+                placeholderTextColor="#aaaaaa"
+                secureTextEntry
+                placeholder='Password'
+                onChangeText={(text) => setPassword(text)}
+                value={password}
+                underlineColorAndroid="transparent"
+                autoCapitalize="none"
+            />
+            <Button style={styles.button} icon="account-arrow-right" mode="contained" onPress={() => onLoginPress()}>
+                Log in
+                    </Button>
+            <View style={styles.footerView}>
+                <Text style={styles.footerText}>Don't have an account? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Sign up</Text></Text>
+            </View>
+
         </View>
     )
 }

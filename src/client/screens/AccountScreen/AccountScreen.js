@@ -32,10 +32,12 @@ export default function AccountScreen({ navigation }) {
                         <Button icon="email" mode="text" >
                             {user ? user.email : ""}
                         </Button>
+                        <Button style={styles.SignOutButton} icon="account-arrow-right" mode="contained" onPress={onSignOutPress}>
+                            Sign out
+                        </Button>
                     </Surface>
                 </View>
             )}
         </CurrentUserContext.Consumer>
-
     )
 }

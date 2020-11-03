@@ -3,17 +3,14 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center'
-    },
-    title: {
-
+        justifyContent: 'center',
+        //alignItems: 'center'
     },
     logo: {
-        flex: 1,
         height: 120,
         width: 90,
         alignSelf: "center",
-        margin: 30
+        marginBottom: 50
     },
     input: {
         height: 48,
@@ -40,7 +37,6 @@ export default StyleSheet.create({
         fontWeight: "bold"
     },
     footerView: {
-        flex: 1,
         alignItems: "center",
         marginTop: 20
     },
