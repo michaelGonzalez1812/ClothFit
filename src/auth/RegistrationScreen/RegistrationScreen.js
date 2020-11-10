@@ -29,6 +29,7 @@ export default function RegistrationScreen({ navigation }) {
                     id: uid,
                     email,
                     fullName,
+                    isProvider: false
                 };
                 const usersRef = firebase.firestore().collection('users')
                 usersRef
