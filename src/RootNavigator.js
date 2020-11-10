@@ -3,7 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { createStackNavigator } from '@react-navigation/stack'
 import { Text } from 'react-native'
 import { LoginScreen, RegistrationScreen } from './auth';
-import { RootNavigator as ClientRootNavigator, AppBar } from './client/screens';
+import { RootNavigator as ClientRootNavigator } from './client/screens/RootNavigator';
+import { AppBar } from './appBar'
+import { RootNavigator as ProviderRootNavigator } from './provider/screens/RootNavigator';
 import { firebase } from './firebase/config';
 import { CurrentUserContext } from './auth'
 
@@ -51,12 +53,14 @@ export const RootNavigator = () => {
           screenOptions={{
             header: ({ scene, previous, navigation }) => (
               <AppBar scene={scene} previous={previous} navigation={navigation} />
-            ),
+            )
           }}>
           {user != null ? (
-
-            <Stack.Screen name="ClientRootNavigator" component={ClientRootNavigator} />
-
+            user.provider? (
+              <Stack.Screen name="ProviderRootNavigator" component={ProviderRootNavigator} />
+            ) : ( 
+              <Stack.Screen name="ClientRootNavigator" component={ClientRootNavigator} />
+            )
           ) : (
               <>
                 <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
