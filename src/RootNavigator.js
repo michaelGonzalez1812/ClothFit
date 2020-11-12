@@ -56,7 +56,7 @@ export const RootNavigator = () => {
             )
           }}>
           {user != null ? (
-            user.provider? (
+            user.isProvider? (
               <Stack.Screen name="ProviderRootNavigator" component={ProviderRootNavigator} />
             ) : ( 
               <Stack.Screen name="ClientRootNavigator" component={ClientRootNavigator} />

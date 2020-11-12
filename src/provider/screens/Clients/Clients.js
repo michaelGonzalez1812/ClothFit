@@ -1,10 +1,17 @@
 import React from 'react'
-import { Text, View } from 'react-native'
+import { FAB } from 'react-native-paper';
+import styles from './styles';
+
 
 export default function Clients({ navigation }) {
     return (
-        <View>
-            <Text>Clients</Text>
-        </View>
+
+            <FAB
+                style={styles.fab}
+                small
+                icon="plus"
+                onPress={ () => navigation.navigate('AddClient') }
+            />
+
     )
 }
