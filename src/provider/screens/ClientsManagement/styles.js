@@ -3,10 +3,16 @@ import { StyleSheet } from 'react-native'
 export default StyleSheet.create({
   fab: {
     position: 'absolute',
-    margin: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 25,
     right: 0,
     bottom: 0,
+    width: 60,
+    height: 60
+    //TODO: Look for a way to increase icon size
   },
+
   container: {
     flex: 1
   },

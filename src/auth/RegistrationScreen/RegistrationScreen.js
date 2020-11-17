@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Image, Text, View } from 'react-native'
 import { TextInput, Button } from 'react-native-paper';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import { firebase } from '../../firebase/config'
 
@@ -29,7 +28,9 @@ export default function RegistrationScreen({ navigation }) {
                     id: uid,
                     email,
                     fullName,
-                    isProvider: false
+                    isProvider: false,
+                    providers: [],
+                    clients: []
                 };
                 const usersRef = firebase.firestore().collection('users')
                 usersRef

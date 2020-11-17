@@ -1,8 +1,6 @@
-export { default as Clients } from "./Clients/Clients"
+export { default as CurrentClients } from "./ClientsManagement/CurrentClients"
 
-export { default as AddClient } from "./Clients/AddClient"
-
-export { default as ClientCard } from "./Clients/ClientCard"
+export { default as AddClient } from "./ClientsManagement/AddClient"
 
 export { default as Account } from "./Account/Account"
 
