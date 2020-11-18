@@ -4,37 +4,23 @@ import { CurrentUserContext } from '../../../auth';
 import styles from './styles';
 import { firebase } from '../../../firebase/config';
 
-export const CurrentClientCard = ({ item }) => {
+export const CurrentClientCard = ({ navigation, item }) => {
 
     const LeftContent = props => <Avatar.Icon {...props} icon="account" />
 
-    const onAddClient = (clientId, providerId) => {
-        const usersRef = firebase.firestore().collection('users')
-        usersRef.doc(providerId).update({
-            clients: firebase.firestore.FieldValue.arrayUnion(clientId)
-        });
-        usersRef.doc(clientId).update({
-            providers: firebase.firestore.FieldValue.arrayUnion(providerId)
-        });
-    }
-
     return (
-        <Card style={styles.clientCard}>
+        <Card style={styles.clientCard} onPress={() => {
+            navigation.navigate('ClientHistory', {item})
+        }}>
             <Card.Title title={item.fullName} left={LeftContent} />
             <Card.Content>
                 <Title>{item.fullName}</Title>
                 <Paragraph>{item.email}</Paragraph>
             </Card.Content>
             <Card.Actions>
-                <CurrentUserContext.Consumer>
-                    {({ user }) => (
-                        <Button
-                            onPress={() => onAddClient(item.id, user.id)}
-                        >
-                            Add
-                        </Button>
-                    )}
-                </CurrentUserContext.Consumer>
+                <Button icon="cash" mode="text">
+                    {item.balance}
+                </Button>
             </Card.Actions>
         </Card>
     )

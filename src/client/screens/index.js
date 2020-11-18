@@ -1,4 +1,4 @@
-export { default as HistoryScreen } from './HistoryScreen/History'
+export { default as History } from './HistoryScreen/History'
 
 export { default as AccountScreen } from './AccountScreen/AccountScreen'
 

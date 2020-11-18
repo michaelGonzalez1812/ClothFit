@@ -2,7 +2,7 @@ import React from 'react';
 import { 
     DrawerContent, 
     AccountScreen,
-    HistoryScreen 
+    History 
 } from './';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 

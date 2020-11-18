@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { FAB } from 'react-native-paper';
 import { SafeAreaView, FlatList } from 'react-native'
-import { CurrentClientCard } from "./CurrentClientCard"
+//import { CurrentClientCard } from "./CurrentClientCard"
+import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
 import styles from './styles';
 import { firebase } from '../../../firebase/config';
 import { CurrentUserContext } from '../../../auth';
@@ -12,6 +13,29 @@ export default function CurrentClients({ navigation }) {
     const [currentClientsData, setCurrentClientsData] = useState([]);
     const userId = useContext(CurrentUserContext).user.id;
 
+    const CurrentClientCard = ({ item }) => {
+
+        const LeftContent = props => <Avatar.Icon {...props} icon="account" />
+    
+        return (
+            <Card style={styles.clientCard} onPress={() => {
+                navigation.navigate('ClientHistory', {item})
+            }}>
+                <Card.Title title={item.fullName} left={LeftContent} />
+                <Card.Content>
+                    <Title>{item.fullName}</Title>
+                    <Paragraph>{item.email}</Paragraph>
+                </Card.Content>
+                <Card.Actions>
+                    <Button icon="cash" mode="text">
+                        {item.balance}
+                    </Button>
+                </Card.Actions>
+            </Card>
+        )
+    }
+
+    
     useEffect(() => {
         //Get current clients
         var unsubscribe = firebase.firestore().collection("users")
@@ -52,6 +76,7 @@ export default function CurrentClients({ navigation }) {
                     data={currentClientsData}
                     renderItem={CurrentClientCard}
                     keyExtractor={item => item.id}
+                    extraData={navigation}
                 />
             </SafeAreaView>
             <FAB
