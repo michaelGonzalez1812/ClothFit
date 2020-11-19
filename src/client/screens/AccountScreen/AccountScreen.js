@@ -28,7 +28,7 @@ export default function AccountScreen({ navigation }) {
                 <View style={styles.general}>
                     <Surface style={styles.surface}>
                         <Avatar.Icon size={100} icon="account" />
-                        <Title style={styles.title}>{user ? user.fullName : ""}</Title>
+                        <Title>{user ? user.fullName : ""}</Title>
                         <Button icon="email" mode="text" >
                             {user ? user.email : ""}
                         </Button>
