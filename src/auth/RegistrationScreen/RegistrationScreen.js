@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Image, Text, View } from 'react-native'
+import { Image, Text, View, Keyboard  } from 'react-native'
 import { TextInput, Button } from 'react-native-paper';
 import styles from './styles';
 import { firebase } from '../../firebase/config'
@@ -15,6 +15,7 @@ export default function RegistrationScreen({ navigation }) {
     }
 
     const onRegisterPress = () => {
+        Keyboard.dismiss();
         if (password !== confirmPassword) {
             alert("Passwords don't match.")
             return

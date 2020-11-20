@@ -1,25 +1,38 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { Image, Text, View } from 'react-native'
+import { View, Keyboard } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import styles from './styles';
+import moment from 'moment';
+import { firebase } from '../../../firebase/config'
+import { CurrentUserContext } from '../../../auth';
 import {
     Avatar,
-    Surface,
     TextInput,
     Title,
     Button,
-    RadioButton
+    RadioButton,
+    Snackbar
 } from 'react-native-paper';
-import styles from './styles';
-import moment from 'moment';
-
 
 export default function AddHistoryItem({ route, navigation }) {
-    var client = route.params.client;
+    /*
+    * It can be the client or the provider.
+    * Depent if acutal signed user is client of provider
+    */
+    var user = route.params.client;
 
     const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false);
     const [amount, setAmount] = useState("");
-    const [value, setValue] = React.useState('payment');
+    const [description, setDescription] = useState("");
+    const [type, setType] = useState("payment");
+    const [visible, setVisible] = useState(false);
+    const [transacId, setTransacId] = useState("");
+
+    const currentSignedUser = useContext(CurrentUserContext).user;
+
+    const onDismissSnackBar = () => setVisible(false);
 
     const onDateChange = (event, selectedDate) => {
         setShow(false);
@@ -30,12 +43,43 @@ export default function AddHistoryItem({ route, navigation }) {
         setAmount(text.replace(/[^0-9]/g, ''));
     }
 
+    const onAcceptPress = () => {
+        Keyboard.dismiss();
+        const data = {
+            client_id: currentSignedUser.isProvider ? user.id : currentSignedUser.id,
+            provider_id: currentSignedUser.isProvider ? currentSignedUser.id : user.id,
+            date,
+            amount: parseInt(amount),
+            description,
+            type
+        };
+
+        firebase.firestore().collection("balance-history")
+            .add(data)
+            .then((docRef) => {
+                setTransacId(docRef.id)
+                setVisible(!visible)
+            })
+            .catch((error) => {
+                alert(error)
+            });
+    }
+
     return (
+
         <View style={styles.general}>
-            <Surface style={styles.surface}>
+            <KeyboardAwareScrollView
+                keyboardShouldPersistTaps="always">
                 <View style={styles.title}>
                     <Avatar.Icon size={100} icon="account" />
-                    <Title>{client ? client.fullName : ""}</Title>
+                    <Title>
+                        Client: {currentSignedUser.isProvider ?
+                            user.fullName : currentSignedUser.fullName}
+                    </Title>
+                    <Title>
+                        Provider: {currentSignedUser.isProvider ?
+                            currentSignedUser.fullName : user.fullName}
+                    </Title>
                 </View>
                 <Button
                     style={styles.button}
@@ -56,31 +100,55 @@ export default function AddHistoryItem({ route, navigation }) {
                 <TextInput
                     style={styles.input}
                     label="Description"
+                    value={description}
                     numberOfLines={4}
                     multiline={true}
+                    onChangeText={(text) => {
+                        setDescription(text)
+                    }}
                 />
+
+                <RadioButton.Group
+                    onValueChange={value => setType(value)}
+                    value={type}
+                >
+                    <RadioButton.Item
+                        style={styles.radionButton}
+                        label="Payment"
+                        value="payment"
+                    />
+                    <RadioButton.Item
+                        style={styles.radionButton}
+                        label="Sale"
+                        value="sale"
+                    />
+                </RadioButton.Group>
+
                 <Button
-                    style={styles.acceptButton}
+                    style={styles.button}
                     mode="contained"
+                    onPress={onAcceptPress}
                 >
                     Accept
                 </Button>
-
-                <RadioButton.Group 
-                    onValueChange={value => setValue(value)} 
-                    value={value}
-                >
-                    <RadioButton.Item 
-                        style={styles.radionButton}
-                        label="Payment" 
-                        value="payment" 
-                    />
-                    <RadioButton.Item 
-                        style={styles.radionButton}
-                        label="Sale" 
-                        value="sale" 
-                    />
-                </RadioButton.Group>
+                <Snackbar
+                    visible={visible}
+                    onDismiss={onDismissSnackBar}
+                    action={{
+                        label: 'Deshacer',
+                        onPress: () => {
+                            firebase.firestore().collection("balance-history")
+                            .doc(transacId)
+                            .delete()
+                            .then(function() {
+                                console.log("Document successfully deleted!");
+                            }).catch(function(error) {
+                                console.error("Error removing document: ", error);
+                            });
+                        },
+                    }}>
+                    Transacción realizada!
+                </Snackbar>
 
                 {show && (
                     <DateTimePicker
@@ -92,7 +160,7 @@ export default function AddHistoryItem({ route, navigation }) {
                         onChange={onDateChange}
                     />
                 )}
-            </Surface>
-        </View>
+            </KeyboardAwareScrollView>
+        </View >
     );
 }

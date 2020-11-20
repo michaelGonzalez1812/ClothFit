@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FAB } from 'react-native-paper';
 import { SafeAreaView, FlatList } from 'react-native';
 import { IconButton, Card, Title, Paragraph } from 'react-native-paper';
 import styles from './styles';
 import { firebase } from '../../../firebase/config';
-import { CurrentUserContext } from '../../../auth';
+
 
 export default function History({ route, navigation }) {
 
@@ -34,7 +34,7 @@ export default function History({ route, navigation }) {
     useEffect(() => {
         //Get current clients
         var unsubscribe = firebase.firestore().collection("balance-history")
-            .where("id", "==", client.id)
+            .where("client_id", "==", client.id)
             .onSnapshot(
                 querySnapshot => {
                     var historyItem = []
@@ -61,10 +61,11 @@ export default function History({ route, navigation }) {
                     extraData={navigation}
                 />
             </SafeAreaView>
+
             <FAB
                 style={styles.fab}
                 icon="plus"
-                onPress={() => navigation.navigate('AddClientHistoryItem', {client})}
+                onPress={() => navigation.navigate('AddClientHistoryItem', { client })}
             />
         </>
     )

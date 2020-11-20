@@ -34,7 +34,7 @@ export default StyleSheet.create({
   },
   general: {
     ...StyleSheet.absoluteFill,
-    padding: 15,
+    
     justifyContent: 'center'
   },
   input: {
@@ -63,18 +63,6 @@ export default StyleSheet.create({
     borderRadius: 5,
   },
 
-  acceptButton: {
-    marginLeft: 30,
-    marginRight: 30,
-    marginTop: 20,
-    marginBottom: 20,
-    height: 48,
-    borderRadius: 5,
-    alignItems: "center",
-    justifyContent: 'center',
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    left: 0,
-  },
+
+
 })
