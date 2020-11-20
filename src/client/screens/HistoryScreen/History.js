@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import { FAB } from 'react-native-paper';
-import { SafeAreaView, FlatList } from 'react-native';
-import { IconButton, Card, Title, Paragraph } from 'react-native-paper';
+import { FlatList, View } from 'react-native';
+import { 
+    IconButton, 
+    Card, 
+    Title, 
+    Paragraph, 
+    FAB, 
+    Avatar, 
+    Surface,
+    Button 
+} from 'react-native-paper';
 import styles from './styles';
 import { firebase } from '../../../firebase/config';
-
 
 export default function History({ route, navigation }) {
 
@@ -51,16 +58,23 @@ export default function History({ route, navigation }) {
         return () => unsubscribe()
     }, [])
 
+    const LeftContent = props => <Avatar.Icon {...props} icon="account" />
+
     return (
         <>
-            <SafeAreaView style={styles.container}>
-                <FlatList
-                    data={balanceHistory}
-                    renderItem={HistoryItemCard}
-                    keyExtractor={item => item.id}
-                    extraData={navigation}
+            <Card style={styles.card}>
+                <Card.Title 
+                    title={client.fullName} 
+                    subtitle={client.balance.toString()}
+                    left={LeftContent}
                 />
-            </SafeAreaView>
+            </Card>
+            <FlatList
+                data={balanceHistory}
+                renderItem={HistoryItemCard}
+                keyExtractor={item => item.id}
+                extraData={navigation}
+            />
 
             <FAB
                 style={styles.fab}

@@ -43,6 +43,15 @@ export default function AddHistoryItem({ route, navigation }) {
         setAmount(text.replace(/[^0-9]/g, ''));
     }
 
+    const onUndoTransaction = () => {
+        firebase.firestore().collection("balance-history")
+            .doc(transacId)
+            .delete()
+            .catch(function (error) {
+                console.error("Error removing document: ", error);
+            });
+    }
+
     const onAcceptPress = () => {
         Keyboard.dismiss();
         const data = {
@@ -131,21 +140,13 @@ export default function AddHistoryItem({ route, navigation }) {
                 >
                     Accept
                 </Button>
+
                 <Snackbar
                     visible={visible}
                     onDismiss={onDismissSnackBar}
                     action={{
                         label: 'Deshacer',
-                        onPress: () => {
-                            firebase.firestore().collection("balance-history")
-                            .doc(transacId)
-                            .delete()
-                            .then(function() {
-                                console.log("Document successfully deleted!");
-                            }).catch(function(error) {
-                                console.error("Error removing document: ", error);
-                            });
-                        },
+                        onPress: () => { onUndoTransaction() }
                     }}>
                     Transacción realizada!
                 </Snackbar>

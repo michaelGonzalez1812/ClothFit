@@ -30,6 +30,7 @@ export default function RegistrationScreen({ navigation }) {
                     email,
                     fullName,
                     isProvider: false,
+                    balance: 0,
                     providers: [],
                     clients: []
                 };
