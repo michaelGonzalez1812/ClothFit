@@ -12,7 +12,9 @@ import {
     Title,
     Button,
     RadioButton,
-    Snackbar
+    Snackbar,
+    Subheading,
+    Headline
 } from 'react-native-paper';
 
 export default function AddHistoryItem({ route, navigation }) {
@@ -52,13 +54,39 @@ export default function AddHistoryItem({ route, navigation }) {
             });
     }
 
+    const updateClientBalance = (clientId, balance) => {
+        firebase.firestore().collection("users")
+            .doc(clientId)
+            .update({
+                balance
+            })
+            .then(function () {
+                setVisible(!visible)
+            })
+            .catch(function (error) {
+                // The document probably doesn't exist.
+                console.error("Error updating document: ", error);
+            });
+    }
+
     const onAcceptPress = () => {
         Keyboard.dismiss();
-        const data = {
-            client_id: currentSignedUser.isProvider ? user.id : currentSignedUser.id,
+        intAmount = parseInt(amount);
+        client_id = currentSignedUser.isProvider ? user.id : currentSignedUser.id;
+
+        if (type == "sale") {
+            balance = currentSignedUser.isProvider ? user.balance + intAmount : currentSignedUser.balance + intAmount;
+        }
+        else {
+            balance = currentSignedUser.isProvider ? user.balance - intAmount : currentSignedUser.balance - intAmount;
+        }
+
+        data = {
+            client_id,
             provider_id: currentSignedUser.isProvider ? currentSignedUser.id : user.id,
             date,
-            amount: parseInt(amount),
+            amount: intAmount,
+            balance,
             description,
             type
         };
@@ -67,11 +95,12 @@ export default function AddHistoryItem({ route, navigation }) {
             .add(data)
             .then((docRef) => {
                 setTransacId(docRef.id)
-                setVisible(!visible)
+                updateClientBalance(this.data.client_id, this.data.balance)
             })
             .catch((error) => {
                 alert(error)
             });
+
     }
 
     return (
@@ -81,14 +110,22 @@ export default function AddHistoryItem({ route, navigation }) {
                 keyboardShouldPersistTaps="always">
                 <View style={styles.title}>
                     <Avatar.Icon size={100} icon="account" />
-                    <Title>
-                        Client: {currentSignedUser.isProvider ?
-                            user.fullName : currentSignedUser.fullName}
-                    </Title>
-                    <Title>
-                        Provider: {currentSignedUser.isProvider ?
-                            currentSignedUser.fullName : user.fullName}
-                    </Title>
+
+                    {currentSignedUser.isProvider ?
+                        <>
+                            <Title> {user.fullName} </Title>
+                            <Button icon="cash" mode="text" >
+                                {user.balance}
+                            </Button>
+                        </>
+                        : 
+                        <>
+                            <Title> {user.fullName} </Title>
+                            <Button icon="cash" mode="text" > 
+                                {currentSignedUser.balance} 
+                            </Button>
+                        </>
+                    }
                 </View>
                 <Button
                     style={styles.button}

@@ -17,7 +17,7 @@ export default StyleSheet.create({
     alignItems: 'center', //horizontal
     justifyContent: 'center', //veritical
     marginBottom: 30,
-    marginTop: 50,
+    marginTop: 30,
   },
   container: {
     flex: 1
@@ -63,6 +63,13 @@ export default StyleSheet.create({
     borderRadius: 5,
   },
 
+  rightContent: {
+    marginRight: 10
+  },
 
+  righCardActions: {
+    flex: 1, 
+    alignItems: 'flex-end'
+  }
 
 })
