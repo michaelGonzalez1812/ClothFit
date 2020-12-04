@@ -3,6 +3,7 @@ import { FlatList, View } from 'react-native';
 import moment from 'moment';
 import styles from './styles';
 import { firebase } from '../../../firebase/config';
+import { emptyItem } from './EmptyItem'
 import {
     IconButton,
     Card,
@@ -18,7 +19,7 @@ export default function History({ route, navigation }) {
     const [balanceHistory, setBalanceHistory] = useState([]);
 
     const HistoryItemCard = ({ item }) => {
-
+        
         const RightContent = type => 
             (type == "sale")?
             <IconButton
@@ -30,8 +31,7 @@ export default function History({ route, navigation }) {
                 icon="cash-refund"
                 size={25}
             />
-        
-        
+                
 
         return (
             <Card style={styles.card}>
@@ -53,7 +53,7 @@ export default function History({ route, navigation }) {
                         <IconButton
                             icon="pencil"
                             size={20}
-                            onPress={() => console.log('Pressed')}
+                            onPress={() => navigation.navigate('AddClientHistoryItem', { client: client, item: item })}
                         />
                     </View>
                 </Card.Actions>
@@ -110,7 +110,9 @@ export default function History({ route, navigation }) {
             <FAB
                 style={styles.fab}
                 icon="plus"
-                onPress={() => navigation.navigate('AddClientHistoryItem', { client })}
+                onPress={() => 
+                    navigation.navigate('AddClientHistoryItem', { client: client, item: emptyItem })
+                }
             />
         </>
     )
