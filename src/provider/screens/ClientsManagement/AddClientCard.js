@@ -10,12 +10,18 @@ export const AddClientCard = ({ item }) => {
 
     const onAddClient = (clientId, providerId) => {
         const usersRef = firebase.firestore().collection('users')
+        usersRef.doc(providerId).collection("clients").doc(clientId)
+            .set({ balance: 0 })
+        usersRef.doc(clientId).collection("providers").doc(providerId)
+            .set({ balance: 0 })
+        /*
         usersRef.doc(providerId).update({
             clients: firebase.firestore.FieldValue.arrayUnion(clientId)
         });
         usersRef.doc(clientId).update({
             providers: firebase.firestore.FieldValue.arrayUnion(providerId)
         });
+        */
     }
 
     return (

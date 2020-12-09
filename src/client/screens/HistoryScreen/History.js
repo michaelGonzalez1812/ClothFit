@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { FlatList, View } from 'react-native';
 import moment from 'moment';
 import styles from './styles';
 import { firebase } from '../../../firebase/config';
 import { emptyItem } from './EmptyItem'
+import { CurrentUserContext } from '../../../auth';
 import {
     IconButton,
     Card,
@@ -15,7 +16,12 @@ import {
 
 export default function History({ route, navigation }) {
 
-    var client = route.params.item;
+    //TODO: Check if params is not undefined but item does
+    if (typeof(route.params) !== 'undefined' && route.params["item"] !== undefined)
+        client = route.params.item;
+    else
+        client = useContext(CurrentUserContext).user;
+
     const [balanceHistory, setBalanceHistory] = useState([]);
 
     const HistoryItemCard = ({ item }) => {
@@ -65,7 +71,7 @@ export default function History({ route, navigation }) {
         //Get current clients
         setBalanceHistory([])
         var unsubscribe = firebase.firestore().collection("balance-history")
-            .where("client_id", "==", client.id)
+            .where("client_id", "==", client? client.id : "")
             .orderBy("date", "desc")
             .onSnapshot(
                 querySnapshot => {
@@ -94,8 +100,8 @@ export default function History({ route, navigation }) {
         <>
             <Card style={styles.card}>
                 <Card.Title
-                    title={client.fullName}
-                    subtitle={"₡ ".concat(client.balance.toString())}
+                    title={client? client.fullName : ""}
+                    subtitle={"₡ ".concat(client? client.balance.toString() : "")}
                     left={LeftContent}
                 />
             </Card>

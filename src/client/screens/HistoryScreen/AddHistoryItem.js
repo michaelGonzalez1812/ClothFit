@@ -212,14 +212,14 @@ export default function AddHistoryItem({ route, navigation }) {
 
                     {currentSignedUser.isProvider ?
                         <>
-                            <Title> {user.fullName} </Title>
+                            <Title> {user? user.fullName : ""} </Title>
                             <Button icon="cash" mode="text" >
                                 {user.balance}
                             </Button>
                         </>
                         : 
                         <>
-                            <Title> {user.fullName} </Title>
+                            <Title> {user? user.fullName : ""} </Title>
                             <Button icon="cash" mode="text" > 
                                 {currentSignedUser.balance} 
                             </Button>

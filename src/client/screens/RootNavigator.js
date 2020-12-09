@@ -11,7 +11,7 @@ const Drawer = createDrawerNavigator();
 export const RootNavigator = ({ navigation }) => {
     return (
         <Drawer.Navigator drawerContent={() => <DrawerContent navigation={navigation} />}>
-            <Drawer.Screen name="History" component={HistoryScreen} />
+            <Drawer.Screen name="History" component={History} />
             <Drawer.Screen name="Account" component={AccountScreen} />
         </Drawer.Navigator>
     );
