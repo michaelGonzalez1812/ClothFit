@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-
+import { ActivityIndicator, Colors } from 'react-native-paper';
 import { createStackNavigator } from '@react-navigation/stack'
-import { Text } from 'react-native'
+import { Text, View, StyleSheet } from 'react-native'
 import { LoginScreen, RegistrationScreen } from './auth';
 import { RootNavigator as ClientRootNavigator } from './client/screens/RootNavigator';
 import { AppBar } from './appBar'
@@ -40,8 +40,9 @@ export const RootNavigator = () => {
 
   if (loading)
     return (
-      //TODO: Create loading page
-      <Text>loading</Text>
+      <View style={styles.loading}>
+        <ActivityIndicator animating={true} />
+      </View>
     );
   else
     //TODO: Look for a way to change the to choose with screen print from stack.navigator property.
@@ -56,11 +57,11 @@ export const RootNavigator = () => {
             )
           }}>
           {user != null ? (
-            user.isProvider? (
+            user.isProvider ? (
               <Stack.Screen name="ProviderRootNavigator" component={ProviderRootNavigator} />
-            ) : ( 
-              <Stack.Screen name="ClientRootNavigator" component={ClientRootNavigator} />
-            )
+            ) : (
+                <Stack.Screen name="ClientRootNavigator" component={ClientRootNavigator} />
+              )
           ) : (
               <>
                 <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
@@ -71,3 +72,12 @@ export const RootNavigator = () => {
       </CurrentUserContext.Provider>
     );
 };
+
+
+const styles = StyleSheet.create({
+  loading: {
+    flex: 1,
+    alignItems: 'center', //horizontal
+    justifyContent: 'center', //veritical
+  }
+});
