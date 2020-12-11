@@ -1,4 +1,4 @@
-
+/*
 export const emptyItem = {
     data: {
         date: new Date(),
@@ -8,4 +8,12 @@ export const emptyItem = {
     },
     id: ""
 }
+*/
 
+export const emptyItem = {
+    docId: "",
+    date: new Date(),
+    amount: 0,
+    description: "",
+    type: "payment"
+}
