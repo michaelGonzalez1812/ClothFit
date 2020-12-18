@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { View } from 'react-native';
-import { CurrentUserContext } from './../../../auth';
+import { CurrentUserContext } from '../../../auth';
 import styles from './styles';
-import { ThemeContext } from './../../../../theme';
+import { ThemeContext } from '../../../../theme';
 import {
   DrawerItem,
   DrawerContentScrollView
@@ -70,6 +70,7 @@ export default function DrawerContent(props) {
             <ThemeContext.Consumer>
               {({ isDarktheme, setDarkThemec }) => (
                 <Switch value={isDarkThemeOn} onValueChange={(isDarkthemep) => {
+                  //TODO: Change to reducer
                   setDarkThemec(isDarkthemep)
                   setisDarkThemeOn(isDarkthemep)
                 }} />

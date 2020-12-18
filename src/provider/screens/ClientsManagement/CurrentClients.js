@@ -5,11 +5,14 @@ import { Avatar, Button, Card, Paragraph } from 'react-native-paper';
 import styles from './styles';
 import { firebase } from '../../../firebase/config';
 import { CurrentUserContext } from '../../../auth';
+import { ClientXProviderContext } from './../../../context';
+
 
 export default function CurrentClients({ navigation }) {
 
     const [currentClients, setCurrentClients] = useState([]);
     const userId = useContext(CurrentUserContext).user.id;
+    const {clientXProviderState, dispatchClientXProvider} = useContext(ClientXProviderContext);
 
     const CurrentClientCard = ({ item }) => {
 
@@ -17,11 +20,12 @@ export default function CurrentClients({ navigation }) {
     
         return (
             <Card style={styles.clientCard} onPress={() => {
-                navigation.navigate('ClientHistory', {item})
+                dispatchClientXProvider({type: 'UPDATE', clientXProviderDocId: item.docId});
+                navigation.navigate('BalanceHistory');
             }}>
-                <Card.Title title={item.clientData.fullName} left={LeftContent} />
+                <Card.Title title={ item.clientData.fullName } left={LeftContent} />
                 <Card.Content>
-                    <Paragraph>{item.clientData.email}</Paragraph>
+                    <Paragraph>{ item.clientData.email }</Paragraph>
                 </Card.Content>
                 <Card.Actions>
                     <Button icon="cash" mode="text">

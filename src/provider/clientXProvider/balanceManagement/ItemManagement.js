@@ -4,8 +4,9 @@ import { View, Keyboard } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import moment from 'moment';
-import { firebase } from '../../../firebase/config'
+import { firebase } from '../../../firebase/config';
 import { CurrentUserContext } from '../../../auth';
+import { ClientXProviderContext } from '../../../context';
 import {
     Avatar,
     TextInput,
@@ -20,18 +21,18 @@ import {
  * - call it with an empty item if you are going to add a new one
  * - or call it with a full item to modify it
  */
-export default function AddHistoryItem({ route, navigation }) {
-    
+export default function ItemManagement({ route }) {
+         
     /* It can be the client or the provider.
-     * Depent if acutal signed client_x_provider is client of provider
+     * Depent if acutal signed clientXProvider is client of provider
      */
-    var client_x_provider = route.params.client_x_provider;
-    var item = route.params.item;
+    const item = route.params.item;
     
     /***** item info *****/
     //To know if we are modifying an item or adding a new one
-    const [isModifying, setIsModifying] = 
-        useState(item.docId == ""? false : true)
+    const isModifying = item.docId == ""? false : true;
+    //const [isModifying, setIsModifying] = 
+     //   useState(updating);
     const [date, setDate] = 
         useState(isModifying? item.date.toDate() : item.date);
     const [amount, setAmount] = useState((item.amount != 0)? item.amount.toString() : "");
@@ -42,13 +43,15 @@ export default function AddHistoryItem({ route, navigation }) {
     const [show, setShow] = useState(false);
     const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
     const [showBalanceUpdateErrorSnackbar, setShowBalanceUpdateErrorSnackbar] = useState(false);
-    
-    /***** Context *****/
-    const currentSignedUser = useContext(CurrentUserContext).user;
 
+    /***** Context *****/
+    const { clientXProvider, dispatchClientXProvider } = useContext(ClientXProviderContext);
+    const currentSignedUser = useContext(CurrentUserContext).user;
+    
     useEffect(() => {
         /* Update item info */
-        setIsModifying(item.docId == ""? false : true);
+        //setIsModifying(item.docId == ""? false : true);
+        const isModifying = item.docId == ""? false : true;
         setDate(isModifying? item.date.toDate() : item.date);
         setAmount((item.amount != 0)? item.amount.toString() : "");
         setDescription(item.description);
@@ -76,15 +79,15 @@ export default function AddHistoryItem({ route, navigation }) {
      **********************************************************************/
     const onAddPress = () => {
         Keyboard.dismiss();
-        intAmount = parseInt(amount);
+        var intAmount = parseInt(amount);
 
-        balance = (type == "sale")? client_x_provider.balance + intAmount :
-            client_x_provider.balance - intAmount;
+        var newBalance = (type == "sale")? clientXProvider.balance + intAmount :
+            clientXProvider.balance - intAmount;
 
         data = {
             date,
             amount: intAmount,
-            balance,
+            balance: newBalance,
             description,
             type,
             modified: false
@@ -93,14 +96,14 @@ export default function AddHistoryItem({ route, navigation }) {
         // Get a new write batch
         var batch = firebase.firestore().batch();
 
-        var client_x_providerDocRef = firebase.firestore()
-            .collection("client-x-provider").doc(client_x_provider.docId);
-        var newHistoryItemDocRef = client_x_providerDocRef
+        var clientXProviderDocRef = firebase.firestore()
+            .collection("client-x-provider").doc(clientXProvider.docId);
+        var newHistoryItemDocRef = clientXProviderDocRef
             .collection("balance-history")
             .doc();
 
         batch.set(newHistoryItemDocRef, data);
-        batch.update(client_x_providerDocRef, { balance });
+        batch.update(clientXProviderDocRef, { balance: newBalance });
 
         // TODO: Check catch to commit
         // Commit the batch
@@ -132,8 +135,8 @@ export default function AddHistoryItem({ route, navigation }) {
         /* Revert last effect in the balance */
         /* item var has the original value */
         balance = (type == "sale")? 
-            client_x_provider.balance - item.amount :
-            client_x_provider.balance + item.amount;
+            clientXProvider.balance - item.amount :
+            clientXProvider.balance + item.amount;
 
         balance = (type == "sale")? 
             balance + intAmount : 
@@ -150,14 +153,14 @@ export default function AddHistoryItem({ route, navigation }) {
 
         var batch = firebase.firestore().batch();
 
-        var client_x_providerDocRef = firebase.firestore()
-            .collection("client-x-provider").doc(client_x_provider.docId);
-        var historyItemDocRef = client_x_providerDocRef
+        var clientXProviderDocRef = firebase.firestore()
+            .collection("client-x-provider").doc(clientXProvider.docId);
+        var historyItemDocRef = clientXProviderDocRef
             .collection("balance-history")
             .doc(item.docId);
  
         batch.update(historyItemDocRef, data);
-        batch.update(client_x_providerDocRef, { balance });
+        batch.update(clientXProviderDocRef, { balance });
 
         // TODO: Check catch to commit
         // Commit the batch
@@ -179,7 +182,7 @@ export default function AddHistoryItem({ route, navigation }) {
     */
 
     return (
-        client_x_provider?
+        clientXProvider?
             <View style={styles.general}>
                 <KeyboardAwareScrollView
                     keyboardShouldPersistTaps="always">
@@ -187,12 +190,12 @@ export default function AddHistoryItem({ route, navigation }) {
                         <Avatar.Icon size={100} icon="account" />
 
                         {currentSignedUser.isProvider ?
-                            <Title> {client_x_provider.clientData.fullName} </Title>: 
-                            <Title> {client_x_provider.providerData.fullName} </Title>
+                            <Title> {clientXProvider.clientData.fullName} </Title>: 
+                            <Title> {clientXProvider.providerData.fullName} </Title>
                         }
                         
                         <Button icon="cash" mode="text" >
-                            {client_x_provider.balance}
+                            {clientXProvider.balance}
                         </Button>
                     </View>
                     <Button
@@ -228,12 +231,12 @@ export default function AddHistoryItem({ route, navigation }) {
                     >
                         <RadioButton.Item
                             style={styles.radionButton}
-                            label="Payment"
+                            label="Pago"
                             value="payment"
                         />
                         <RadioButton.Item
                             style={styles.radionButton}
-                            label="Sale"
+                            label="Venta"
                             value="sale"
                         />
                     </RadioButton.Group>
@@ -249,10 +252,7 @@ export default function AddHistoryItem({ route, navigation }) {
                     <Snackbar
                         visible={showSuccessSnackbar}
                         onDismiss={onDismissSnackBar}
-                        action={{
-                            label: 'Deshacer',
-                            onPress: () => { isModifying? onUndoModify() : onUndoAdd() }
-                        }}>
+                        >
                         Transacción realizada!
                     </Snackbar>
                     
@@ -276,6 +276,11 @@ export default function AddHistoryItem({ route, navigation }) {
                     )}
                 </KeyboardAwareScrollView>
             </View > :
-            <View></View>
+            <View><Button
+            style={styles.button}
+            mode="contained"
+        >
+            Actualizar
+        </Button></View>
     );
 }

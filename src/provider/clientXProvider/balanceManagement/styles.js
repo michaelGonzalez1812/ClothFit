@@ -22,9 +22,17 @@ export default StyleSheet.create({
   container: {
     flex: 1
   },
-  card: {
-    marginTop: 5,
-    marginBottom: 5
+  cardSale: {
+    marginBottom: 5,
+    backgroundColor: "#bdbdbd"
+  },
+  cardPayment: {
+    marginBottom: 5,
+    backgroundColor: "#efefef"
+  },
+  cardTittle: {
+    marginBottom: 5,
+    backgroundColor: "#86b3bd"
   },
   surface: {
     //alignItems: 'center', //horizontal
@@ -70,6 +78,12 @@ export default StyleSheet.create({
   righCardActions: {
     flex: 1, 
     alignItems: 'flex-end'
+  },
+
+  loading: {
+    flex: 1,
+    alignItems: 'center', //horizontal
+    justifyContent: 'center', //veritical
   }
 
 })
