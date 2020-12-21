@@ -22,7 +22,7 @@ export default function History({ route, navigation }) {
     const { clientXProvider, dispatchClientXProvider } = useContext(ClientXProviderContext);
     const [balanceHistory, setBalanceHistory] = useState([]);
 
-    const HistoryItemCard = ({ item }) => {
+    const HistoryItemCard = ({ item, index }) => {
 
         const LeftContent = type =>
             (type == "sale") ?
@@ -49,15 +49,16 @@ export default function History({ route, navigation }) {
                 </Card.Content>
                 <Card.Actions>
                     <View style={{ padding: 5 }}>
-                        <Caption>{moment(item.date.toDate()).format('DD-MM-YYYY')}</Caption>
+                        <Caption>{moment(item.date).format('DD-MM-YYYY')}</Caption>
                     </View>
                     <View style={styles.righCardActions}>
                         <IconButton
                             icon="pencil"
                             size={20}
-                            disabled= {true}
-                            onPress={() =>
-                                navigation.navigate('BalanceItemManagement', { item })
+                            onPress={() => {
+                                    var subhistory = balanceHistory.slice(0, index);
+                                    navigation.navigate('BalanceItemManagement', { item, subhistory: subhistory })
+                                }
                             }
                         />
                     </View>

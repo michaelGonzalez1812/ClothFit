@@ -27,6 +27,7 @@ export default function ItemManagement({ route }) {
      * Depent if acutal signed clientXProvider is client of provider
      */
     const item = route.params.item;
+    const subhistory = route.params.subhistory;
     
     /***** item info *****/
     //To know if we are modifying an item or adding a new one
@@ -34,7 +35,7 @@ export default function ItemManagement({ route }) {
     //const [isModifying, setIsModifying] = 
      //   useState(updating);
     const [date, setDate] = 
-        useState(isModifying? item.date.toDate() : item.date);
+        useState(isModifying? item.date : item.date);
     const [amount, setAmount] = useState((item.amount != 0)? item.amount.toString() : "");
     const [description, setDescription] = useState(item.description);
     const [type, setType] = useState(item.type);
@@ -52,7 +53,7 @@ export default function ItemManagement({ route }) {
         /* Update item info */
         //setIsModifying(item.docId == ""? false : true);
         const isModifying = item.docId == ""? false : true;
-        setDate(isModifying? item.date.toDate() : item.date);
+        setDate(isModifying? item.date : item.date);
         setAmount((item.amount != 0)? item.amount.toString() : "");
         setDescription(item.description);
         setType(item.type);
@@ -84,8 +85,8 @@ export default function ItemManagement({ route }) {
         var newBalance = (type == "sale")? clientXProvider.balance + intAmount :
             clientXProvider.balance - intAmount;
 
-        data = {
-            date,
+        const data = {
+            date: firebase.firestore.FieldValue.serverTimestamp(),
             amount: intAmount,
             balance: newBalance,
             description,
@@ -132,6 +133,8 @@ export default function ItemManagement({ route }) {
         Keyboard.dismiss();
         intAmount = parseInt(amount);
 
+        
+
         /* Revert last effect in the balance */
         /* item var has the original value */
         balance = (type == "sale")? 
@@ -141,9 +144,11 @@ export default function ItemManagement({ route }) {
         balance = (type == "sale")? 
             balance + intAmount : 
             balance - intAmount
+
+        const fixFactor = balance - clientXProvider.balance;
         
         data = {
-            date,
+            //date, do not modify
             amount: intAmount,
             balance,
             description,
@@ -151,15 +156,25 @@ export default function ItemManagement({ route }) {
             modified: true
         };
 
-        var batch = firebase.firestore().batch();
-
-        var clientXProviderDocRef = firebase.firestore()
-            .collection("client-x-provider").doc(clientXProvider.docId);
-        var historyItemDocRef = clientXProviderDocRef
+        
+        const db = firebase.firestore();
+        const batch = db.batch();
+        const clientXProviderDocRef = db.collection("client-x-provider")
+            .doc(clientXProvider.docId);
+        var balanceHistoryItemDocRef = clientXProviderDocRef
             .collection("balance-history")
             .doc(item.docId);
- 
-        batch.update(historyItemDocRef, data);
+
+        batch.update(balanceHistoryItemDocRef, data);
+
+        if (fixFactor != 0)
+            subhistory.forEach(element => {
+                balanceHistoryItemDocRef =  clientXProviderDocRef
+                    .collection("balance-history")
+                    .doc(element.docId);
+                batch.update(balanceHistoryItemDocRef, { balance: element.balance + fixFactor })
+            });
+
         batch.update(clientXProviderDocRef, { balance });
 
         // TODO: Check catch to commit
@@ -202,6 +217,7 @@ export default function ItemManagement({ route }) {
                         style={styles.button}
                         icon="calendar"
                         mode="outlined"
+                        disabled= {true}
                         onPress={() => {
                             setShow(true);
                         }}>
