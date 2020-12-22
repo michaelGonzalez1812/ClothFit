@@ -131,26 +131,23 @@ export default function ItemManagement({ route }) {
 
     const onModifyPress = () => {
         Keyboard.dismiss();
-        intAmount = parseInt(amount);
-
-        
+        const intAmount = parseInt(amount);
 
         /* Revert last effect in the balance */
         /* item var has the original value */
-        balance = (type == "sale")? 
+        var balance = (item.type == "sale")? 
             clientXProvider.balance - item.amount :
             clientXProvider.balance + item.amount;
 
         balance = (type == "sale")? 
             balance + intAmount : 
-            balance - intAmount
+            balance - intAmount;
 
         const fixFactor = balance - clientXProvider.balance;
         
-        data = {
+        const data = {
             //date, do not modify
             amount: intAmount,
-            balance,
             description,
             type,
             modified: true
@@ -161,9 +158,10 @@ export default function ItemManagement({ route }) {
         const batch = db.batch();
         const clientXProviderDocRef = db.collection("client-x-provider")
             .doc(clientXProvider.docId);
+        
         var balanceHistoryItemDocRef = clientXProviderDocRef
-            .collection("balance-history")
-            .doc(item.docId);
+        .collection("balance-history")
+        .doc(item.docId);
 
         batch.update(balanceHistoryItemDocRef, data);
 
