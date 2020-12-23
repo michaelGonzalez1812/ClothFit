@@ -16,6 +16,14 @@ import {
     Snackbar,
 } from 'react-native-paper';
 
+/**/
+export const emptyItem = {
+    docId: "",
+    date: null,
+    amount: 0,
+    description: "",
+    type: "payment"
+}
 
 /* To use this component you should:
  * - call it with an empty item if you are going to add a new one
@@ -219,7 +227,7 @@ export default function ItemManagement({ route }) {
                         onPress={() => {
                             setShow(true);
                         }}>
-                        {moment(date).format('DD-MM-YYYY')}
+                        {moment(new Date()).format('DD-MM-YYYY')}
                     </Button>
                     <TextInput
                         style={styles.input}

@@ -3,7 +3,7 @@ import { FlatList, View } from 'react-native';
 import moment from 'moment';
 import styles from './styles';
 import { firebase } from '../../../firebase/config';
-import { emptyItem } from './EmptyItem';
+import { emptyItem } from './ItemManagement';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ClientXProviderContext } from '../../../context';
 import { ActivityIndicator } from 'react-native-paper';
