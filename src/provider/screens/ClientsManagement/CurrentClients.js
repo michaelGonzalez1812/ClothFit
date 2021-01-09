@@ -21,7 +21,7 @@ export default function CurrentClients({ navigation }) {
         return (
             <Card style={styles.clientCard} onPress={() => {
                 dispatchClientXProvider({type: 'UPDATE', clientXProviderDocId: item.docId});
-                navigation.navigate('BalanceHistory');
+                navigation.push('ClientXProviderRootNavigator');
             }}>
                 <Card.Title title={ item.clientData.fullName } left={LeftContent} />
                 <Card.Content>
@@ -56,18 +56,18 @@ export default function CurrentClients({ navigation }) {
 
     return (
         <>
-            <SafeAreaView style={styles.container}>
+            
                 <FlatList
                     data={currentClients}
                     renderItem={CurrentClientCard}
                     keyExtractor={item => item.docId}
                     extraData={navigation}
                 />
-            </SafeAreaView>
+            
             <FAB
                 style={styles.fab}
                 icon="plus"
-                onPress={() => navigation.navigate('AddClient')}
+                onPress={() => navigation.push('AddClient')}
             />
         </>
     )

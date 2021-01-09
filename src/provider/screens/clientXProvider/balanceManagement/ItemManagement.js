@@ -4,9 +4,9 @@ import { View, Keyboard } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import moment from 'moment';
-import { firebase } from '../../../firebase/config';
-import { CurrentUserContext } from '../../../auth';
-import { ClientXProviderContext } from '../../../context';
+import { firebase } from '../../../../firebase/config';
+import { CurrentUserContext } from '../../../../auth';
+import { ClientXProviderContext } from '../../../../context';
 import {
     Avatar,
     TextInput,

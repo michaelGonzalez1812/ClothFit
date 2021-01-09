@@ -2,10 +2,10 @@ import React, { useEffect, useState, useContext } from 'react'
 import { FlatList, View } from 'react-native';
 import moment from 'moment';
 import styles from './styles';
-import { firebase } from '../../../firebase/config';
+import { firebase } from '../../../../firebase/config';
 import { emptyItem } from './ItemManagement';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { ClientXProviderContext } from '../../../context';
+import { ClientXProviderContext } from '../../../../context';
 import { ActivityIndicator } from 'react-native-paper';
 import {
     IconButton,
@@ -58,7 +58,7 @@ export default function History({ route, navigation }) {
                             size={20}
                             onPress={() => {
                                     var subhistory = balanceHistory.slice(0, index+1);
-                                    navigation.navigate('BalanceItemManagement', { item, subhistory: subhistory })
+                                    navigation.push('BalanceItemManagement', { item, subhistory: subhistory })
                                 }
                             }
                         />
@@ -124,7 +124,7 @@ export default function History({ route, navigation }) {
                     style={styles.fab}
                     icon="plus"
                     onPress={() =>
-                        navigation.navigate('BalanceItemManagement', {item: emptyItem})
+                        navigation.push('ItemManagement', {item: emptyItem})
                     }
                 />
             </>
