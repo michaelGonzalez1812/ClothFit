@@ -12,7 +12,7 @@ export const RootNavigator = ({ navigation }) => {
         <ClientXProviderContextProvider>
             <Drawer.Navigator 
                 initialRouteName="Clients"
-                drawerContent={() => <DrawerContent navigation={navigation} />}>
+                drawerContent={props => <DrawerContent {...props} />}>
 
                 <Drawer.Screen name="Clients" component={ ClientsManagementRootNavigator } />
                 <Drawer.Screen name="Account" component={Account} />

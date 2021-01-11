@@ -8,7 +8,7 @@ export default function Header({ scene, previous, navigation }) {
         <Appbar.Header>
             {previous ? (
                 <Appbar.BackAction
-                    onPress={navigation.pop}
+                    onPress={navigation.goBack}
                 />
             ) : (
                     <IconButton

@@ -49,17 +49,17 @@ export default function History({ route, navigation }) {
                 </Card.Content>
                 <Card.Actions>
                     <View style={{ padding: 5 }}>
-                        
-                        <Caption>{item.date? moment(item.date.toDate()).format('DD-MM-YYYY') : ""}</Caption>
+
+                        <Caption>{item.date ? moment(item.date.toDate()).format('DD-MM-YYYY') : ""}</Caption>
                     </View>
                     <View style={styles.righCardActions}>
                         <IconButton
                             icon="pencil"
                             size={20}
                             onPress={() => {
-                                    var subhistory = balanceHistory.slice(0, index+1);
-                                    navigation.push('BalanceItemManagement', { item, subhistory: subhistory })
-                                }
+                                var subhistory = balanceHistory.slice(0, index + 1);
+                                navigation.push('BalanceItemManagement', { item, subhistory: subhistory })
+                            }
                             }
                         />
                     </View>
@@ -102,29 +102,26 @@ export default function History({ route, navigation }) {
     return (
         clientXProvider != null ?
             <>
-                <KeyboardAwareScrollView
-                    keyboardShouldPersistTaps="always">
-
-                    <Card style={styles.cardTittle}>
-                        <Card.Title
-                            title={clientXProvider.clientData.fullName}
-                            subtitle={"₡ ".concat(clientXProvider.balance.toString())}
-                            left={LeftContent}
-                        />
-                    </Card>
-
-                    <FlatList
-                        data={balanceHistory}
-                        renderItem={HistoryItemCard}
-                        keyExtractor={item => item.docId}
-                        extraData={navigation}
+                <Card style={styles.cardTittle}>
+                    <Card.Title
+                        title={clientXProvider.clientData.fullName}
+                        subtitle={"₡ ".concat(clientXProvider.balance.toString())}
+                        left={LeftContent}
                     />
-                </KeyboardAwareScrollView>
+                </Card>
+
+                <FlatList
+                    data={balanceHistory}
+                    renderItem={HistoryItemCard}
+                    keyExtractor={item => item.docId}
+                    extraData={navigation}
+                />
+
                 <FAB
                     style={styles.fab}
                     icon="plus"
                     onPress={() =>
-                        navigation.push('ItemManagement', {item: emptyItem})
+                        navigation.push('ItemManagement', { item: emptyItem })
                     }
                 />
             </>
