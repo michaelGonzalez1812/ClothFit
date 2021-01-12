@@ -21,7 +21,7 @@ export default function CurrentClients({ navigation }) {
         return (
             <Card style={styles.clientCard} onPress={() => {
                 dispatchClientXProvider({type: 'UPDATE', clientXProviderDocId: item.docId});
-                navigation.push('ClientXProviderRootNavigator');
+                navigation.push('BalanceHistory');
             }}>
                 <Card.Title title={ item.clientData.fullName } left={LeftContent} />
                 <Card.Content>
