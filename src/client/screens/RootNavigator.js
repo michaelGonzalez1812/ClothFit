@@ -1,25 +1,52 @@
 import React from 'react';
-import { 
-    DrawerContent, 
-    AccountScreen,
-    History 
-} from './';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { firebase } from '../../firebase/config';
+import { ClientXProviderContextProvider } from "./../../context";
+import { RootNavigator as ClientsManagementRootNavigator } from './ProvidersManagement';
+import { RootNavigator as AccountRootNavigator } from './Account';
+import { RootNavigator as MarketRootNavigator } from './Market'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const Drawer = createDrawerNavigator();
+const Tab = createBottomTabNavigator();
 
-export const RootNavigator = ({ navigation }) => {
-    firebase.auth().signOut().then(function () {
-        //TODO: clean navigation stack
-        //navigation.navigate('Login');
-    }).catch(function (error) {
-        console.log(error);
-    });
-    return (
-        <Drawer.Navigator drawerContent={() => <DrawerContent navigation={navigation} />}>
-            <Drawer.Screen name="History" component={History} />
-            <Drawer.Screen name="Account" component={AccountScreen} />
-        </Drawer.Navigator>
-    );
+export const RootNavigator = ({ }) => {
+  return (
+    <ClientXProviderContextProvider>
+        <Tab.Navigator
+          initialRouteName="Clients">
+
+          <Tab.Screen 
+            name="Account" 
+            component={AccountRootNavigator} 
+            options={{
+              tabBarLabel: 'Cuenta',
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons name="account" color={color} size={size} />
+              ),
+            }}
+          />
+          
+          <Tab.Screen 
+            name="Clients" 
+            component={ClientsManagementRootNavigator} 
+            options={{
+              tabBarLabel: 'Proveedores',
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons name="account-group" color={color} size={size} />
+              ),
+            }}
+          />
+
+          <Tab.Screen 
+            name="Market" 
+            component={MarketRootNavigator} 
+            options={{
+              tabBarLabel: 'Tienda',
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons name="store" color={color} size={size} />
+              ),
+            }}
+          />
+        </Tab.Navigator>
+    </ClientXProviderContextProvider>
+  );
 }
