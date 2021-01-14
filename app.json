@@ -5,8 +5,16 @@
     "name": "ClothFit",
     "slug": "ClothFit",
     "version": "1.0.0",
+    "icon": "./assets/images/icon.png",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "android": {
+      "package": "com.michaelsoft.clothfit",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#A9C2C8"
+      }
+    }
   }
 }

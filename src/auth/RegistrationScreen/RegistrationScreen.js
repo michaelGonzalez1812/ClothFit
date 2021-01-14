@@ -55,7 +55,7 @@ export default function RegistrationScreen({ navigation }) {
             <View style={styles.container}>
                 <Image
                     style={styles.logo}
-                    source={require('../../../assets/icon.png')}
+                    source={require('../../../assets/images/adaptive-icon.png')}
                 />
                 <TextInput
                     style={styles.input}
