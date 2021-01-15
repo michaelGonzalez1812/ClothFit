@@ -59,7 +59,7 @@ export default function RegistrationScreen({ navigation }) {
                 />
                 <TextInput
                     style={styles.input}
-                    placeholder='Full Name'
+                    label="Nombre"
                     placeholderTextColor="#aaaaaa"
                     onChangeText={(text) => setFullName(text)}
                     value={fullName}
@@ -68,7 +68,7 @@ export default function RegistrationScreen({ navigation }) {
                 />
                 <TextInput
                     style={styles.input}
-                    placeholder='E-mail'
+                    label="Correo"
                     placeholderTextColor="#aaaaaa"
                     onChangeText={(text) => setEmail(text)}
                     value={email}
@@ -79,7 +79,7 @@ export default function RegistrationScreen({ navigation }) {
                     style={styles.input}
                     placeholderTextColor="#aaaaaa"
                     secureTextEntry
-                    placeholder='Password'
+                    label="Contraseña"
                     onChangeText={(text) => setPassword(text)}
                     value={password}
                     underlineColorAndroid="transparent"
@@ -89,7 +89,7 @@ export default function RegistrationScreen({ navigation }) {
                     style={styles.input}
                     placeholderTextColor="#aaaaaa"
                     secureTextEntry
-                    placeholder='Confirm Password'
+                    label="Confirmar Contraseña"
                     onChangeText={(text) => setConfirmPassword(text)}
                     value={confirmPassword}
                     underlineColorAndroid="transparent"
@@ -101,10 +101,10 @@ export default function RegistrationScreen({ navigation }) {
                     mode="contained"
                     onPress={() => onRegisterPress()}>
 
-                    Create account
+                    Registrarse
                 </Button>
                 <View style={styles.footerView}>
-                    <Text style={styles.footerText}>Already got an account? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Log in</Text></Text>
+                    <Text style={styles.footerText}>Ya tienes una cuenta? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Inicia sesión</Text></Text>
                 </View>
             </View>
         </View>

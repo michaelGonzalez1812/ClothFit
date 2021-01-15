@@ -58,7 +58,7 @@ export default function History({ route, navigation }) {
                             size={20}
                             onPress={() => {
                                 var subhistory = balanceHistory.slice(0, index + 1);
-                                navigation.push('BalanceItemManagement', { item, subhistory: subhistory })
+                                navigation.push('ItemManagement', { item, subhistory: subhistory })
                             }
                             }
                         />

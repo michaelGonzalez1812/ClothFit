@@ -15,12 +15,12 @@ export const RootNavigator = ({ }) => {
           initialRouteName="Clients">
 
           <Tab.Screen 
-            name="Account" 
-            component={AccountRootNavigator} 
+            name="Market" 
+            component={MarketRootNavigator} 
             options={{
-              tabBarLabel: 'Cuenta',
+              tabBarLabel: 'Tienda',
               tabBarIcon: ({ color, size }) => (
-                <MaterialCommunityIcons name="account" color={color} size={size} />
+                <MaterialCommunityIcons name="store" color={color} size={size} />
               ),
             }}
           />
@@ -37,12 +37,12 @@ export const RootNavigator = ({ }) => {
           />
 
           <Tab.Screen 
-            name="Market" 
-            component={MarketRootNavigator} 
+            name="Account" 
+            component={AccountRootNavigator} 
             options={{
-              tabBarLabel: 'Tienda',
+              tabBarLabel: 'Cuenta',
               tabBarIcon: ({ color, size }) => (
-                <MaterialCommunityIcons name="store" color={color} size={size} />
+                <MaterialCommunityIcons name="account" color={color} size={size} />
               ),
             }}
           />

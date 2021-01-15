@@ -85,7 +85,7 @@ export default function AddClient({ navigation }) {
         var unsubscribe = firebase.firestore().collection("users")
             .doc(provider.id)
             .onSnapshot(function (doc) {
-                var clients = doc.data().clients;
+                var clients = doc.data().clients? doc.data().clients : [];
                 clients.push(provider.id); // Avoid add itself
                 setCurrentClients(clients);
             });

@@ -46,7 +46,7 @@ export default function LoginScreen({ navigation }) {
             />
             <TextInput
                 style={styles.input}
-                placeholder='E-mail'
+                label='Correo'
                 placeholderTextColor="#aaaaaa"
                 onChangeText={(text) => setEmail(text)}
                 value={email}
@@ -57,17 +57,17 @@ export default function LoginScreen({ navigation }) {
                 style={styles.input}
                 placeholderTextColor="#aaaaaa"
                 secureTextEntry
-                placeholder='Password'
+                label='Contraseña'
                 onChangeText={(text) => setPassword(text)}
                 value={password}
                 underlineColorAndroid="transparent"
                 autoCapitalize="none"
             />
             <Button style={styles.button} icon="account-arrow-right" mode="contained" onPress={() => onLoginPress()}>
-                Log in
+                Iniciar
                     </Button>
             <View style={styles.footerView}>
-                <Text style={styles.footerText}>Don't have an account? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Sign up</Text></Text>
+                <Text style={styles.footerText}>Aun no tienes una cuenta? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Registrate</Text></Text>
             </View>
 
         </View>

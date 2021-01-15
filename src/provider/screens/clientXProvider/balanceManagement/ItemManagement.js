@@ -231,14 +231,14 @@ export default function ItemManagement({ route }) {
                     </Button>
                     <TextInput
                         style={styles.input}
-                        label="Amount"
+                        label="Monto"
                         keyboardType='numeric'
                         value={amount}
                         onChangeText={onAmountChange}
                     />
                     <TextInput
                         style={styles.input}
-                        label="Description"
+                        label="Descripción"
                         value={description}
                         numberOfLines={4}
                         multiline={true}

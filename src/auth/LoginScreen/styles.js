@@ -6,13 +6,13 @@ export default StyleSheet.create({
         justifyContent: 'center',
     },
     logo: {
-        height: 120,
-        width: 90,
+        height: 200,
+        width: 200,
         alignSelf: "center",
         marginBottom: 50
     },
     input: {
-        height: 48,
+        height: 60,
         borderRadius: 5,
         overflow: 'hidden',
         marginTop: 10,

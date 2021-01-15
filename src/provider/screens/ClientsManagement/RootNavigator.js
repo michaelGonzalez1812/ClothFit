@@ -1,5 +1,6 @@
 import React from 'react';
 import { default as CurrentClients } from './CurrentClients';
+import { default as AddClient } from './AddClient'
 import { RootNavigator as ClientXProviderRootNavigator } from './../clientXProvider';
 import { createStackNavigator } from '@react-navigation/stack';
 import { AppBar } from './../../../appBar';
@@ -17,6 +18,7 @@ export default function RootNavigator() {
             )
         }}>
             <Stack.Screen name="CurrentClients" component={CurrentClients} />
+            <Stack.Screen name="AddClient" component={AddClient} />
             <Stack.Screen name="ClientXProviderRootNavigator" component={ClientXProviderRootNavigator} />
             <Stack.Screen name="BalanceHistory" component={BalanceHistory} />
             <Stack.Screen name="ItemManagement" component={ItemManagement} />

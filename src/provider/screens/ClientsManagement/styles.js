@@ -29,8 +29,7 @@ export default StyleSheet.create({
   },
   
   clientCard: {
-    marginTop: 5,
-    marginBottom: 5
+    marginBottom: 2
   },
 
   righCardActions: {
