@@ -8,6 +8,18 @@
     "test": "jest"
   },
   "dependencies": {
+    "expo": "~39.0.3",
+    "expo-splash-screen": "~0.6.2",
+    "expo-status-bar": "~1.0.2",
+    "expo-updates": "~0.3.2",
+    "react": "16.13.1",
+    "react-dom": "17.0.1",
+    "react-native": "~0.63.3",
+    "react-native-gesture-handler": "~1.7.0",
+    "react-native-reanimated": "~1.13.1",
+    "react-native-screens": "~2.10.1",
+    "react-native-unimodules": "~0.11.0",
+    "react-native-web": "~0.14.4",
     "@react-native-community/datetimepicker": "3.0.0",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-firebase/app": "^8.4.6",
@@ -18,23 +30,11 @@
     "@react-navigation/stack": "^5.10.0",
     "base-64": "^1.0.0",
     "deepmerge": "^4.2.2",
-    "expo": "~39.0.3",
-    "expo-splash-screen": "~0.6.2",
-    "expo-status-bar": "~1.0.2",
-    "expo-updates": "~0.3.5",
     "firebase": "^7.9.0",
     "moment": "^2.29.1",
-    "react": "17.0.1",
-    "react-dom": "17.0.1",
-    "react-native": "~0.63.3",
-    "react-native-gesture-handler": "~1.7.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.3",
     "react-native-paper": "^4.2.0",
-    "react-native-reanimated": "~1.13.1",
-    "react-native-safe-area-context": "3.1.4",
-    "react-native-screens": "~2.10.1",
-    "react-native-unimodules": "~0.11.0",
-    "react-native-web": "~0.14.4"
+    "react-native-safe-area-context": "3.1.4"
   },
   "devDependencies": {
     "@babel/core": "~7.12.3",
@@ -45,5 +45,7 @@
   "jest": {
     "preset": "react-native"
   },
-  "private": true
+  "private": true,
+  "name": "ClothFit",
+  "version": "1.0.0"
 }

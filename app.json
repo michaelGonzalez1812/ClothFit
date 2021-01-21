@@ -6,6 +6,9 @@
     "slug": "ClothFit",
     "version": "1.0.0",
     "icon": "./assets/images/icon.png",
+    "splash": {
+      "image": "./assets/images/splash.png"
+    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -13,7 +16,7 @@
       "package": "com.michaelsoft.clothfit",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#A9C2C8"
+        "backgroundColor": "#FFFFFF"
       }
     }
   }
