@@ -132,3 +132,7 @@ buck-out/
 web-build/
 
 # @end expo-cli
+
+# -------------
+apks/
+bundletool-all-1.4.0.jar
