@@ -4,6 +4,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import styles from './styles';
 import { Button, TextInput, Text } from 'react-native-paper';
 import { firebase } from '../../firebase/config'
+var FBLoginButton = require('./FBLoginButton');
 
 export default function LoginScreen({ navigation }) {
     const [email, setEmail] = useState('')
@@ -44,6 +45,7 @@ export default function LoginScreen({ navigation }) {
                 style={styles.logo}
                 source={require('../../../assets/images/adaptive-icon.png')}
             />
+            <FBLoginButton/>
             <TextInput
                 style={styles.input}
                 label='Correo'
