@@ -5,6 +5,7 @@ import styles from './styles';
 import { Button, TextInput, Text } from 'react-native-paper';
 import { firebase } from '../../firebase/config'
 var FBLoginButton = require('./FBLoginButton');
+import { AccessToken, GraphRequestManager, GraphRequest } from 'react-native-fbsdk';
 
 export default function LoginScreen({ navigation }) {
     const [email, setEmail] = useState('')
@@ -67,7 +68,7 @@ export default function LoginScreen({ navigation }) {
             />
             <Button style={styles.button} icon="account-arrow-right" mode="contained" onPress={() => onLoginPress()}>
                 Iniciar
-                    </Button>
+            </Button>
             <View style={styles.footerView}>
                 <Text style={styles.footerText}>Aun no tienes una cuenta? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Registrate</Text></Text>
             </View>

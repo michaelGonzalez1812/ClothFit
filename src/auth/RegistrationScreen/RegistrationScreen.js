@@ -38,9 +38,6 @@ export default function RegistrationScreen({ navigation }) {
                 usersRef
                     .doc(uid)
                     .set(data)
-                    .then(() => {
-                        navigation.navigate('ClientRootNavigator')
-                    })
                     .catch((error) => {
                         alert(error)
                     });
