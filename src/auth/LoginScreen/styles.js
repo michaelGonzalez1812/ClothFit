@@ -9,7 +9,7 @@ export default StyleSheet.create({
         height: 200,
         width: 200,
         alignSelf: "center",
-        marginBottom: 50
+        marginBottom: 5
     },
     input: {
         height: 60,
@@ -27,6 +27,18 @@ export default StyleSheet.create({
         marginTop: 20,
         height: 48,
         borderRadius: 5,
+        alignItems: "center",
+        justifyContent: 'center'
+    },
+    socialMediaButton: {
+        height: 30,
+        width: 230,
+        borderRadius: 5,
+        alignItems: "center",
+        justifyContent: 'center'
+    },
+    socialMediaView: {
+        marginBottom: 25,
         alignItems: "center",
         justifyContent: 'center'
     },

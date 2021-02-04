@@ -105,7 +105,7 @@ export default function AddClient({ navigation }) {
                         setAvailableClients(newClientsData)
                     },
                     error => {
-                        console.log(error);
+                        console.error(error);
                     }
                 )
             return () => unsubscribe()

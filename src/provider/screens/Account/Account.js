@@ -17,7 +17,7 @@ export default function Account({ navigation }) {
             //TODO: clean navigation stack
             //navigation.navigate('Login');
         }).catch(function (error) {
-            console.log(error);
+            console.error(error);
         });
     }
 

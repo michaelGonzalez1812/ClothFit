@@ -8,16 +8,16 @@ import {
     Button
 } from 'react-native-paper';
 import { firebase } from '../../../firebase/config';
+import { LoginManager as FBLoginManager } from 'react-native-fbsdk';
 import styles from './styles';
 
 export default function Account({ navigation }) {
 
     const onSignOutPress = () => {
         firebase.auth().signOut().then(function () {
-            //TODO: clean navigation stack
-            //navigation.navigate('Login');
+            FBLoginManager.logOut();
         }).catch(function (error) {
-            console.log(error);
+            console.error(error);
         });
     }
 
@@ -33,7 +33,7 @@ export default function Account({ navigation }) {
                             {user ? user.email : ""}
                         </Button>
                         <Button style={styles.SignOutButton} icon="account-arrow-right" mode="contained" onPress={onSignOutPress}>
-                            Sign out
+                            Cerrar sesión
                         </Button>
                     </Surface>
                 </View>

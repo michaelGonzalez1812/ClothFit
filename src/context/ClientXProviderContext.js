@@ -23,7 +23,7 @@ export default function ClientXProviderContextProvider({children}) {
             data.docId = clientXProviderDocId;
             setClientXProvider(data);
         },  function(error) {
-            console.log(error);
+            console.error(error);
         });
         
         return state;

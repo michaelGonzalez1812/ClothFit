@@ -75,7 +75,7 @@ export default function History({ route, navigation }) {
                         setBalanceHistory(historyItem)
                     },
                     error => {
-                        console.log(error);
+                        console.error(error);
                     }
                 );
             //TODO: Check it is unsubscribir correctly

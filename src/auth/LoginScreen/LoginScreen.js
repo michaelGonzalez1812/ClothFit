@@ -1,11 +1,9 @@
-import React, { useState } from 'react'
-import { Image, View } from 'react-native'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import React, { useState } from 'react';
+import { Image, View } from 'react-native';
 import styles from './styles';
 import { Button, TextInput, Text } from 'react-native-paper';
-import { firebase } from '../../firebase/config'
-var FBLoginButton = require('./FBLoginButton');
-import { AccessToken, GraphRequestManager, GraphRequest } from 'react-native-fbsdk';
+import { firebase } from '../../firebase/config';
+import { default as FBLoginButton } from './FBLoginButton';
 
 export default function LoginScreen({ navigation }) {
     const [email, setEmail] = useState('')
@@ -46,7 +44,9 @@ export default function LoginScreen({ navigation }) {
                 style={styles.logo}
                 source={require('../../../assets/images/adaptive-icon.png')}
             />
-            <FBLoginButton/>
+            <View style={styles.socialMediaView}>
+                <FBLoginButton/>
+            </View>
             <TextInput
                 style={styles.input}
                 label='Correo'

@@ -18,17 +18,11 @@ export const RootNavigator = () => {
   useEffect(() => {
     const usersRef = firebase.firestore().collection('users');
     firebase.auth().onAuthStateChanged(user => {
-      console.log("onAuthStateChanged*******************");
       if (user) {
-        console.log("onAuthStateChanged*******************true");
-        console.log("user: ", user);
         usersRef
           .doc(user.uid)
           .get()
           .then((document) => {
-            console.log("in then onAuthSateChanged");
-            console.log("document: ", document);
-            console.log("document.data: ", document.data);
             const userData = document.data()
             setUser(userData)
           })
@@ -37,7 +31,6 @@ export const RootNavigator = () => {
             setUser(null)
           });
       } else {
-        console.log("onAuthStateChanged*******************false");
         setUser(null)
       }
       setLoading(false)
