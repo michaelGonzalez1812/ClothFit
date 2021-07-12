@@ -27,7 +27,7 @@
     "react": "16.13.1",
     "react-dom": "17.0.1",
     "react-native": "~0.63.3",
-    "react-native-fbsdk": "^3.0.0",
+    "react-native-fbsdk-next": "^4.3.0",
     "react-native-gesture-handler": "~1.7.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.3",
     "react-native-paper": "^4.2.0",

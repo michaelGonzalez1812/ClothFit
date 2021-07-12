@@ -8,7 +8,7 @@ import {
     Button
 } from 'react-native-paper';
 import { firebase } from '../../../firebase/config';
-import { LoginManager as FBLoginManager } from 'react-native-fbsdk';
+import { LoginManager as FBLoginManager } from 'react-native-fbsdk-next';
 import styles from './styles';
 
 export default function Account({ navigation }) {

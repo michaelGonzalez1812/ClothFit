@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { View } from 'react-native';
-import { LoginButton, AccessToken, GraphRequestManager, GraphRequest } from 'react-native-fbsdk';
+import { LoginButton, AccessToken, GraphRequestManager, GraphRequest } from 'react-native-fbsdk-next';
 import { firebase } from '../../firebase/config';
 import styles from './styles';
 
@@ -27,8 +27,7 @@ export default function FBLoginButton() {
                 const data = {
                   id: uid,
                   email: result.email,
-                  first_name: result.first_name,
-                  last_name: result.last_name,
+                  fullName: result.first_name + ' ' + result.last_name,
                   isProvider: false,
                   balance: 0,
                   providers: [],
