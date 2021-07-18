@@ -1,128 +1,134 @@
-import React, { useEffect, useState, useContext } from 'react'
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { View, Keyboard } from 'react-native'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import styles from './styles';
-import moment from 'moment';
-import { firebase } from '../../../../firebase/config';
-import { CurrentUserContext } from '../../../../auth';
-import { ClientXProviderContext } from '../../../../context';
+import React, { useEffect, useState, useContext } from "react";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { View, Keyboard } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import styles from "./styles";
+import moment from "moment";
+import { firebase } from "../../../../firebase/config";
+import { CurrentUserContext } from "../../../../auth";
+import { ClientXProviderContext } from "../../../../context";
 import {
-    Avatar,
-    TextInput,
-    Title,
-    Button,
-    RadioButton,
-    Snackbar,
-} from 'react-native-paper';
+  Avatar,
+  TextInput,
+  Title,
+  Button,
+  RadioButton,
+  Snackbar,
+} from "react-native-paper";
 
 /**/
 export const emptyItem = {
-    docId: "",
-    date: null,
-    amount: 0,
-    description: "",
-    type: "payment"
-}
+  docId: "",
+  date: null,
+  amount: 0,
+  description: "",
+  type: "payment",
+};
 
 /* To use this component you should:
  * - call it with an empty item if you are going to add a new one
  * - or call it with a full item to modify it
  */
 export default function ItemManagement({ route }) {
-         
-    /* It can be the client or the provider.
-     * Depent if acutal signed clientXProvider is client of provider
-     */
-    const item = route.params.item;
-    const subhistory = route.params.subhistory;
-    
-    /***** item info *****/
-    //To know if we are modifying an item or adding a new one
-    const isModifying = item.docId == ""? false : true;
-    //const [isModifying, setIsModifying] = 
-     //   useState(updating);
-    const [date, setDate] = 
-        useState(isModifying? item.date : item.date);
-    const [amount, setAmount] = useState((item.amount != 0)? item.amount.toString() : "");
-    const [description, setDescription] = useState(item.description);
-    const [type, setType] = useState(item.type);
-    
-    /***** GUI flags *****/
-    const [show, setShow] = useState(false);
-    const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
-    const [showBalanceUpdateErrorSnackbar, setShowBalanceUpdateErrorSnackbar] = useState(false);
+  /* It can be the client or the provider.
+   * Depent if acutal signed clientXProvider is client of provider
+   */
+  const item = route.params.item;
+  const subhistory = route.params.subhistory;
 
-    /***** Context *****/
-    const { clientXProvider, dispatchClientXProvider } = useContext(ClientXProviderContext);
-    const currentSignedUser = useContext(CurrentUserContext).user;
-    
-    useEffect(() => {
-        /* Update item info */
-        //setIsModifying(item.docId == ""? false : true);
-        const isModifying = item.docId == ""? false : true;
-        setDate(isModifying? item.date : item.date);
-        setAmount((item.amount != 0)? item.amount.toString() : "");
-        setDescription(item.description);
-        setType(item.type);
-    }, [item]);
+  /***** item info *****/
+  //To know if we are modifying an item or adding a new one
+  const isModifying = item.docId == "" ? false : true;
+  //const [isModifying, setIsModifying] =
+  //   useState(updating);
+  const [date, setDate] = useState(isModifying ? item.date : item.date);
+  const [amount, setAmount] = useState(
+    item.amount != 0 ? item.amount.toString() : ""
+  );
+  const [description, setDescription] = useState(item.description);
+  const [type, setType] = useState(item.type);
 
-    /* Hide all Snackbar */
-    const onDismissSnackBar = () => {
-        setShowSuccessSnackbar(false);
-        setShowBalanceUpdateErrorSnackbar(false);
-    }
+  /***** GUI flags *****/
+  const [show, setShow] = useState(false);
+  const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
+  const [showBalanceUpdateErrorSnackbar, setShowBalanceUpdateErrorSnackbar] =
+    useState(false);
 
-    const onDateChange = (event, selectedDate) => {
-        setShow(false);
-        setDate(selectedDate);
+  /***** Context *****/
+  const { clientXProvider, dispatchClientXProvider } = useContext(
+    ClientXProviderContext
+  );
+  const currentSignedUser = useContext(CurrentUserContext).user;
+
+  useEffect(() => {
+    /* Update item info */
+    //setIsModifying(item.docId == ""? false : true);
+    const isModifying = item.docId == "" ? false : true;
+    setDate(isModifying ? item.date : item.date);
+    setAmount(item.amount != 0 ? item.amount.toString() : "");
+    setDescription(item.description);
+    setType(item.type);
+  }, [item]);
+
+  /* Hide all Snackbar */
+  const onDismissSnackBar = () => {
+    setShowSuccessSnackbar(false);
+    setShowBalanceUpdateErrorSnackbar(false);
+  };
+
+  const onDateChange = (event, selectedDate) => {
+    setShow(false);
+    setDate(selectedDate);
+  };
+
+  const onAmountChange = (text) => {
+    setAmount(text.replace(/[^0-9]/g, ""));
+  };
+
+  /**********************************************************************
+   * Add new item logic
+   **********************************************************************/
+  const onAddPress = () => {
+    Keyboard.dismiss();
+    var intAmount = parseInt(amount);
+
+    var newBalance =
+      type == "sale"
+        ? clientXProvider.balance + intAmount
+        : clientXProvider.balance - intAmount;
+
+    const data = {
+      date: firebase.firestore.FieldValue.serverTimestamp(),
+      amount: intAmount,
+      balance: newBalance,
+      description,
+      type,
+      modified: false,
     };
 
-    const onAmountChange = (text) => {
-        setAmount(text.replace(/[^0-9]/g, ''));
-    }
+    // Get a new write batch
+    var batch = firebase.firestore().batch();
 
+    var clientXProviderDocRef = firebase
+      .firestore()
+      .collection("client-x-provider")
+      .doc(clientXProvider.docId);
+    var newHistoryItemDocRef = clientXProviderDocRef
+      .collection("balance-history")
+      .doc();
 
-    /**********************************************************************
-     * Add new item logic
-     **********************************************************************/
-    const onAddPress = () => {
-        Keyboard.dismiss();
-        var intAmount = parseInt(amount);
+    batch.set(newHistoryItemDocRef, data);
+    batch.update(clientXProviderDocRef, { balance: newBalance });
 
-        var newBalance = (type == "sale")? clientXProvider.balance + intAmount :
-            clientXProvider.balance - intAmount;
+    // TODO: Check catch to commit
+    // Commit the batch
+    batch.commit().then(function () {
+      setShowSuccessSnackbar(!showSuccessSnackbar);
+    });
+  };
 
-        const data = {
-            date: firebase.firestore.FieldValue.serverTimestamp(),
-            amount: intAmount,
-            balance: newBalance,
-            description,
-            type,
-            modified: false
-        };
-
-        // Get a new write batch
-        var batch = firebase.firestore().batch();
-
-        var clientXProviderDocRef = firebase.firestore()
-            .collection("client-x-provider").doc(clientXProvider.docId);
-        var newHistoryItemDocRef = clientXProviderDocRef
-            .collection("balance-history")
-            .doc();
-
-        batch.set(newHistoryItemDocRef, data);
-        batch.update(clientXProviderDocRef, { balance: newBalance });
-
-        // TODO: Check catch to commit
-        // Commit the batch
-        batch.commit().then(function () {
-            setShowSuccessSnackbar(!showSuccessSnackbar)
-        });
-    }
-
-    //TODO: develope
-    /*
+  //TODO: develope
+  /*
     const onUndoAdd = () => {
         firebase.firestore().collection("balance-history")
             .doc(transacId)
@@ -133,65 +139,66 @@ export default function ItemManagement({ route }) {
     }
     */
 
-    /**********************************************************************
-     * Modify item logic
-     **********************************************************************/
+  /**********************************************************************
+   * Modify item logic
+   **********************************************************************/
 
-    const onModifyPress = () => {
-        Keyboard.dismiss();
-        const intAmount = parseInt(amount);
+  const onModifyPress = () => {
+    Keyboard.dismiss();
+    const intAmount = parseInt(amount);
 
-        /* Revert last effect in the balance */
-        /* item var has the original value */
-        var balance = (item.type == "sale")? 
-            clientXProvider.balance - item.amount :
-            clientXProvider.balance + item.amount;
+    /* Revert last effect in the balance */
+    /* item var has the original value */
+    var balance =
+      item.type == "sale"
+        ? clientXProvider.balance - item.amount
+        : clientXProvider.balance + item.amount;
 
-        balance = (type == "sale")? 
-            balance + intAmount : 
-            balance - intAmount;
+    balance = type == "sale" ? balance + intAmount : balance - intAmount;
 
-        const fixFactor = balance - clientXProvider.balance;
-        
-        const data = {
-            //date, do not modify
-            amount: intAmount,
-            description,
-            type,
-            modified: true
-        };
+    const fixFactor = balance - clientXProvider.balance;
 
-        
-        const db = firebase.firestore();
-        const batch = db.batch();
-        const clientXProviderDocRef = db.collection("client-x-provider")
-            .doc(clientXProvider.docId);
-        
-        var balanceHistoryItemDocRef = clientXProviderDocRef
-        .collection("balance-history")
-        .doc(item.docId);
+    const data = {
+      //date, do not modify
+      amount: intAmount,
+      description,
+      type,
+      modified: true,
+    };
 
-        batch.update(balanceHistoryItemDocRef, data);
+    const db = firebase.firestore();
+    const batch = db.batch();
+    const clientXProviderDocRef = db
+      .collection("client-x-provider")
+      .doc(clientXProvider.docId);
 
-        if (fixFactor != 0)
-            subhistory.forEach(element => {
-                balanceHistoryItemDocRef =  clientXProviderDocRef
-                    .collection("balance-history")
-                    .doc(element.docId);
-                batch.update(balanceHistoryItemDocRef, { balance: element.balance + fixFactor })
-            });
+    var balanceHistoryItemDocRef = clientXProviderDocRef
+      .collection("balance-history")
+      .doc(item.docId);
 
-        batch.update(clientXProviderDocRef, { balance });
+    batch.update(balanceHistoryItemDocRef, data);
 
-        // TODO: Check catch to commit
-        // Commit the batch
-        batch.commit().then(function () {
-            setShowSuccessSnackbar(!showSuccessSnackbar)
+    if (fixFactor != 0)
+      subhistory.forEach((element) => {
+        balanceHistoryItemDocRef = clientXProviderDocRef
+          .collection("balance-history")
+          .doc(element.docId);
+        batch.update(balanceHistoryItemDocRef, {
+          balance: element.balance + fixFactor,
         });
-    }
+      });
 
-    //TODO: develope
-    /*
+    batch.update(clientXProviderDocRef, { balance });
+
+    // TODO: Check catch to commit
+    // Commit the batch
+    batch.commit().then(function () {
+      setShowSuccessSnackbar(!showSuccessSnackbar);
+    });
+  };
+
+  //TODO: develope
+  /*
     const onUndoModify = () => {
         firebase.firestore().collection("balance-history")
             .doc(transacId)
@@ -202,107 +209,105 @@ export default function ItemManagement({ route }) {
     }
     */
 
-    return (
-        clientXProvider?
-            <View style={styles.general}>
-                <KeyboardAwareScrollView
-                    keyboardShouldPersistTaps="always">
-                    <View style={styles.title}>
-                        <Avatar.Icon size={100} icon="account" />
+  return clientXProvider ? (
+    <View style={styles.general}>
+      <KeyboardAwareScrollView keyboardShouldPersistTaps="always">
+        <View style={styles.title}>
+          <Avatar.Icon size={100} icon="account" />
 
-                        {currentSignedUser.isProvider ?
-                            <Title> {clientXProvider.clientData.fullName} </Title>: 
-                            <Title> {clientXProvider.providerData.fullName} </Title>
-                        }
-                        
-                        <Button icon="cash" mode="text" >
-                            {clientXProvider.balance}
-                        </Button>
-                    </View>
-                    <Button
-                        style={styles.button}
-                        icon="calendar"
-                        mode="outlined"
-                        disabled= {true}
-                        onPress={() => {
-                            setShow(true);
-                        }}>
-                        {moment(new Date()).format('DD-MM-YYYY')}
-                    </Button>
-                    <TextInput
-                        style={styles.input}
-                        label="Monto"
-                        keyboardType='numeric'
-                        value={amount}
-                        onChangeText={onAmountChange}
-                    />
-                    <TextInput
-                        style={styles.input}
-                        label="Descripción"
-                        value={description}
-                        numberOfLines={4}
-                        multiline={true}
-                        onChangeText={(text) => {
-                            setDescription(text)
-                        }}
-                    />
+          {currentSignedUser.isProvider ? (
+            <Title> {clientXProvider.clientData.fullName} </Title>
+          ) : (
+            <Title> {clientXProvider.providerData.fullName} </Title>
+          )}
 
-                    <RadioButton.Group
-                        onValueChange={value => setType(value)}
-                        value={type}
-                    >
-                        <RadioButton.Item
-                            style={styles.radionButton}
-                            label="Pago"
-                            value="payment"
-                        />
-                        <RadioButton.Item
-                            style={styles.radionButton}
-                            label="Venta"
-                            value="sale"
-                        />
-                    </RadioButton.Group>
-
-                    <Button
-                        style={styles.button}
-                        mode="contained"
-                        onPress= { isModifying? onModifyPress : onAddPress }
-                    >
-                        { isModifying? "Actualizar" : "Agregar" }
-                    </Button>
-
-                    <Snackbar
-                        visible={showSuccessSnackbar}
-                        onDismiss={onDismissSnackBar}
-                        >
-                        Transacción realizada!
-                    </Snackbar>
-                    
-                    {/* BalanceUpdateErrorSnackbar */}
-                    <Snackbar
-                        visible={showBalanceUpdateErrorSnackbar}
-                        onDismiss={onDismissSnackBar}
-                        >
-                        Error actualizando el balance del ciente!
-                    </Snackbar>
-
-                    {show && (
-                        <DateTimePicker
-                            testID="dateTimePicker"
-                            value={date}
-                            mode={'date'}
-                            is24Hour={true}
-                            display="default"
-                            onChange={onDateChange}
-                        />
-                    )}
-                </KeyboardAwareScrollView>
-            </View > :
-            <View><Button
-            style={styles.button}
-            mode="contained"
+          <Button icon="cash" mode="text">
+            {clientXProvider.balance}
+          </Button>
+        </View>
+        <Button
+          style={styles.button}
+          icon="calendar"
+          mode="outlined"
+          disabled={true}
+          onPress={() => {
+            setShow(true);
+          }}
         >
-            Actualizar
-        </Button></View>
-    );
+          {moment(new Date()).format("DD-MM-YYYY")}
+        </Button>
+        <TextInput
+          style={styles.input}
+          label="Monto"
+          keyboardType="numeric"
+          value={amount}
+          onChangeText={onAmountChange}
+        />
+        <TextInput
+          style={styles.input}
+          label="Descripción"
+          value={description}
+          numberOfLines={4}
+          multiline={true}
+          onChangeText={(text) => {
+            setDescription(text);
+          }}
+        />
+
+        <RadioButton.Group
+          onValueChange={(value) => setType(value)}
+          value={type}
+        >
+          <RadioButton.Item
+            style={styles.radionButton}
+            label="Pago"
+            value="payment"
+          />
+          <RadioButton.Item
+            style={styles.radionButton}
+            label="Venta"
+            value="sale"
+          />
+        </RadioButton.Group>
+
+        <Button
+          style={styles.button}
+          mode="contained"
+          onPress={isModifying ? onModifyPress : onAddPress}
+        >
+          {isModifying ? "Actualizar" : "Agregar"}
+        </Button>
+
+        <Snackbar visible={showSuccessSnackbar} onDismiss={onDismissSnackBar}>
+          Transacción realizada!
+        </Snackbar>
+
+        {/* BalanceUpdateErrorSnackbar */}
+        {/* TODO: manage on error logic */}
+        <Snackbar
+          visible={showBalanceUpdateErrorSnackbar}
+          onDismiss={onDismissSnackBar}
+        >
+          Error actualizando el balance del ciente!
+        </Snackbar>
+
+        {show && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={date}
+            mode={"date"}
+            is24Hour={true}
+            display="default"
+            onChange={onDateChange}
+          />
+        )}
+      </KeyboardAwareScrollView>
+    </View>
+  ) : (
+    <View>
+      <Button style={styles.button} mode="contained">
+        Actualizar
+      </Button>
+    </View>
+  );
 }
