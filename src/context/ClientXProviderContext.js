@@ -1,49 +1,59 @@
-import React, {createContext, useState, useReducer} from 'react';
-import { firebase } from '../firebase/config';
+import React, { createContext, useState, useReducer } from "react";
+import firestore from "@react-native-firebase/firestore";
 
 const defaultValue = {
-    unsubscribe: null, //unsubcribe firestore listener
+  unsubscribe: null, //unsubcribe firestore listener
 };
 
-const ClientXProviderContext = createContext(defaultValue);  
+const ClientXProviderContext = createContext(defaultValue);
 
-export default function ClientXProviderContextProvider({children}) {
+export default function ClientXProviderContextProvider({ children }) {
+  const [clientXProvider, setClientXProvider] = useState();
 
-    const [clientXProvider, setClientXProvider] = useState();
+  const updateClientXProvider = (state, clientXProviderDocId) => {
+    setClientXProvider(undefined);
 
-    const updateClientXProvider = (state, clientXProviderDocId) => {
-        setClientXProvider(undefined);
+    if (state.unsubscribe) state.unsubscribe();
 
-        if(state.unsubscribe) state.unsubscribe();
-    
-        state.unsubscribe = firebase.firestore().collection("client-x-provider")
-        .doc(clientXProviderDocId)
-        .onSnapshot(function(doc) {
-            var data = doc.data();
-            data.docId = clientXProviderDocId;
-            setClientXProvider(data);
-        },  function(error) {
-            console.error(error);
-        });
-        
-        return state;
-    };
-    
-    const reducer = (state, action) => {
-        //logica para obtener datos de firebase
-        switch (action.type) {
-            case "UPDATE": return updateClientXProvider(state, action.clientXProviderDocId);
-            default: return state;
+    state.unsubscribe = firestore()
+      .collection("client-x-provider")
+      .doc(clientXProviderDocId)
+      .onSnapshot(
+        function (doc) {
+          var data = doc.data();
+          data.docId = clientXProviderDocId;
+          setClientXProvider(data);
+        },
+        function (error) {
+          console.error(error);
         }
-    };
-    
-    const [clientXProviderState, dispatchClientXProvider] = useReducer(reducer, defaultValue);
+      );
 
-    return (
-        <ClientXProviderContext.Provider value= {{clientXProvider, dispatchClientXProvider}}>
-            {children}
-        </ClientXProviderContext.Provider>
-    );
+    return state;
+  };
+
+  const reducer = (state, action) => {
+    //logica para obtener datos de firebase
+    switch (action.type) {
+      case "UPDATE":
+        return updateClientXProvider(state, action.clientXProviderDocId);
+      default:
+        return state;
+    }
+  };
+
+  const [clientXProviderState, dispatchClientXProvider] = useReducer(
+    reducer,
+    defaultValue
+  );
+
+  return (
+    <ClientXProviderContext.Provider
+      value={{ clientXProvider, dispatchClientXProvider }}
+    >
+      {children}
+    </ClientXProviderContext.Provider>
+  );
 }
 
-export {ClientXProviderContext, defaultValue};
+export { ClientXProviderContext, defaultValue };

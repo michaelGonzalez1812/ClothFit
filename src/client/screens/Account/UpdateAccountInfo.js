@@ -3,7 +3,7 @@ import { View, Keyboard } from "react-native";
 import { TextInput, Button, Snackbar } from "react-native-paper";
 import { CurrentUserContext } from "./../../../auth";
 import styles from "./update_account_styles";
-import { firebase } from "../../../firebase/config";
+import firestore from "@react-native-firebase/firestore";
 
 export default function UpdateAccountInfo({ navigation }) {
   const currentUser = useContext(CurrentUserContext);
@@ -17,7 +17,7 @@ export default function UpdateAccountInfo({ navigation }) {
 
   const onUpdateInfoPress = () => {
     Keyboard.dismiss();
-    const db = firebase.firestore();
+    const db = firestore();
 
     const batch = db.batch();
     const userDocRef = db.collection("users").doc(currentUser.user.id);

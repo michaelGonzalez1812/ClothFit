@@ -2,9 +2,9 @@ import React from "react";
 import { View } from "react-native";
 import { CurrentUserContext } from "./../../../auth";
 import { Surface, Avatar, Title, Button } from "react-native-paper";
-import { firebase } from "../../../firebase/config";
 import { LoginManager as FBLoginManager } from "react-native-fbsdk-next";
 import styles from "./styles";
+import auth from "@react-native-firebase/auth";
 
 export default function Account({ navigation }) {
   const onEditAccountPress = () => {
@@ -12,8 +12,7 @@ export default function Account({ navigation }) {
   };
 
   const onSignOutPress = () => {
-    firebase
-      .auth()
+    auth()
       .signOut()
       .then(function () {
         FBLoginManager.logOut();

@@ -137,3 +137,4 @@ web-build/
 apks/
 bundletool-all-1.4.0.jar
 *.hprof
+android/app/google-services.json
