@@ -1,7 +1,9 @@
-export { default as RegistrationScreen } from './RegistrationScreen/RegistrationScreen'
+export { default as RegistrationScreen } from "./RegistrationScreen/RegistrationScreen";
 
-export { default as LoginScreen } from './LoginScreen/LoginScreen'
+export { default as LoginScreen } from "./LoginScreen/LoginScreen";
 
-export { default as RootNavigator } from './RootNavigator'
+export { default as EmailVerificationScreen } from "./EmailVerificationScreen/EmailVerificationScreen";
 
-export { CurrentUserContext } from './current-user-context'
+export { default as RootNavigator } from "./RootNavigator";
+
+export { CurrentUserContext } from "./current-user-context";

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Image, Text, View, Keyboard } from "react-native";
+import { Image, Text, View, Keyboard, Alert } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import styles from "./styles";
 import auth from "@react-native-firebase/auth";
@@ -10,6 +10,33 @@ export default function RegistrationScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  async function sendEmail() {
+    var actionCodeSettings = {
+      url: "https://clothfit.page.link/?email=" + auth().currentUser.email,
+      iOS: {
+        bundleId: "com.example.ios",
+      },
+      android: {
+        packageName: "com.michaelsoft.clothfit",
+        installApp: false,
+        minimumVersion: "12",
+      },
+      handleCodeInApp: false,
+      // When multiple custom dynamic link domains are defined, specify which
+      // one to use.
+      dynamicLinkDomain: "clothfit.page.link",
+    };
+    auth()
+      .currentUser.sendEmailVerification(actionCodeSettings)
+      .then(function () {
+        console.log("verification email send");
+      })
+      .catch(function (error) {
+        console.error(error);
+        Alert.alert("Error: verfication email send");
+      });
+  }
 
   const onFooterLinkPress = () => {
     navigation.navigate("LogIn");
@@ -38,6 +65,9 @@ export default function RegistrationScreen({ navigation }) {
         usersRef
           .doc(uid)
           .set(data)
+          .then((data) => {
+            sendEmail();
+          })
           .catch((error) => {
             alert(error);
           });
